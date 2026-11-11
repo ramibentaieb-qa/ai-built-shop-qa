@@ -1,0 +1,1 @@
+Observation: after client side naigation, previous pages remain in the DOM as hidden elements (example: 3 `h1` elements after Home -> Cart, only 1 visible). Not a user facing defect. Tests use role-based locators to avoid matching hidden elements.
