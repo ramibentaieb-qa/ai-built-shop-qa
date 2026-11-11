@@ -1,6 +1,6 @@
 name: Playwright Tests
 
-on: 
+on:
   pull_request:
     branches: [main]
   push:
@@ -23,8 +23,8 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browser
-        run:  npx playwright install --with-deps chromium
-      
+        run: npx playwright install --with-deps chromium
+
       - name: Run tests
         run: npx playwright test
 
