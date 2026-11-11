@@ -1,6 +1,6 @@
-const CartPage = require('../pages/CartPage');
-const HomePage = require('../pages/HomePage');
-const NotFoundPage = require('../pages/NotFoundPage');
+const CartPage = require('../pages-objects/CartPage');
+const HomePage = require('../pages-objects/HomePage');
+const NotFoundPage = require('../pages-objects/NotFoundPage');
 const {test, expect} = require('@playwright/test');
 
 
