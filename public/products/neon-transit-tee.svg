@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <clipPath id="tee"><path d="M68 34 L46 46 L26 74 L48 90 L60 74 L60 162 Q60 168 66 168 L134 168 Q140 168 140 162 L140 74 L152 90 L174 74 L154 46 L132 34 C128 48 116 54 100 54 C84 54 72 48 68 34 Z" /></clipPath>
+  </defs>
+  <rect width="200" height="200" fill="#f4f4f5" />
+  <ellipse cx="100" cy="177" rx="54" ry="7" fill="#0c0a09" opacity="0.07" />
+  <path d="M68 34 L46 46 L26 74 L48 90 L60 74 L60 162 Q60 168 66 168 L134 168 Q140 168 140 162 L140 74 L152 90 L174 74 L154 46 L132 34 C128 48 116 54 100 54 C84 54 72 48 68 34 Z" fill="#1c1917" />
+  <g clip-path="url(#tee)"><circle cx="100" cy="98" r="20" fill="none" stroke="#facc15" stroke-width="5" /></g>
+  <path d="M68 34 L46 46 L26 74 L48 90 L60 74 L60 162 Q60 168 66 168 L134 168 Q140 168 140 162 L140 74 L152 90 L174 74 L154 46 L132 34 C128 48 116 54 100 54 C84 54 72 48 68 34 Z" fill="none" stroke="#0c0a09" stroke-width="1.5" opacity="0.18" />
+</svg>
