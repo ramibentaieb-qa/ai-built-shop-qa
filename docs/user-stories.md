@@ -19,6 +19,7 @@
 ### Out of scope
 Products, search, cart logic, checkout, login, and any database. Do not implement these in this story.
 
+---
 
 ## Story 2: Product List
 
@@ -35,6 +36,30 @@ Products, search, cart logic, checkout, login, and any database. Do not implemen
 
 ### Out of scope
 Search, filters, product detail page, add to cart, cart page, checkout, login, and any database. Product data may live in one local file.
+
+----
+
+## Story 3: Product Detail
+
+**As a** shopper,
+**I want** to open a product,
+**so that** I can read its details and choose size and quantity.
+
+### Acceptance Criteria
+1. Clicking a product name or image on `/products` opens `/products/{id}`, where the id is a number from 1 to 12 (for example `/products/1`).
+2. The detail page shows the same title and price as the clicked card, a non-empty description, at least one image with meaningful alt text, the sizes S, M, L and XL, a quantity selector, and an "Add to cart" button.
+3. The quantity starts at 1. "+" increases it by 1, up to 10 (at 10 the "+" button is disabled). "−" decreases it by 1, down to 1 (at 1 the "−" button is disabled). The quantity cannot be typed in.
+4. Only one size can be selected at a time. Selecting another size replaces the previous one, and the selected size is visibly marked.
+5. An unknown id (`/products/999`, `/products/0`, `/products/-1`, `/products/abc`) shows the "Page not found" page with status 404.
+6. A "Back to products" link returns to `/products`.
+7. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+
+### Locators
+`product-title`, `product-price`, `product-description`, `product-image`, `size-option-S`, `size-option-M`, `size-option-L`, `size-option-XL`, `quantity-decrease`, `quantity-increase`, `quantity-value`, `add-to-cart`, `back-to-products`.
+(On `/products`, the existing `product-card`, `product-name` and `product-image` are unchanged; the name and image become links.)
+
+### Out of scope
+Adding to the cart (the "Add to cart" button may exist but does nothing yet), the "Please select a size" message, the cart badge, reviews, image galleries, and any database.
 
 
 

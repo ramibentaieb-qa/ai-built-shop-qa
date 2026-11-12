@@ -9,6 +9,10 @@ class ProductsPage extends BasePage {
         return await this.getText('header h1');
     } 
 
+    async clickAProduct(productId) {
+        await this.page.locator(`a[href='/products/${productId}']`).first().click();
+    }
+
 
 
 

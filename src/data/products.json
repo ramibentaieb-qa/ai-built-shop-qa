@@ -1,86 +1,98 @@
 [
   {
-    "id": "midnight-grid-tee",
+    "id": "1",
     "name": "Midnight Grid Tee",
     "price": 29.99,
     "image": "/products/midnight-grid-tee.svg",
-    "alt": "Navy blue urban t-shirt with a teal grid print"
+    "alt": "Navy blue urban t-shirt with a teal grid print",
+    "description": "Deep navy cotton tee with a teal grid print across the chest. Straight cut, mid-weight fabric, and a fit that holds its shape wash after wash."
   },
   {
-    "id": "concrete-stripe-tee",
+    "id": "2",
     "name": "Concrete Stripe Tee",
     "price": 32.5,
     "image": "/products/concrete-stripe-tee.svg",
-    "alt": "Concrete grey urban t-shirt with white horizontal stripes"
+    "alt": "Concrete grey urban t-shirt with white horizontal stripes",
+    "description": "Concrete grey tee with clean white chest stripes. A workwear-inspired staple that pairs just as well with jeans as it does with cargos."
   },
   {
-    "id": "neon-transit-tee",
+    "id": "3",
     "name": "Neon Transit Tee",
     "price": 27,
     "image": "/products/neon-transit-tee.svg",
-    "alt": "Black urban t-shirt with a neon yellow circle print"
+    "alt": "Black urban t-shirt with a neon yellow circle print",
+    "description": "Black tee with a neon yellow circle print for late-night city runs. Lightweight jersey that stays cool under a jacket."
   },
   {
-    "id": "rooftop-static-tee",
+    "id": "4",
     "name": "Rooftop Static Tee",
     "price": 34,
     "image": "/products/rooftop-static-tee.svg",
-    "alt": "Slate grey urban t-shirt with a white chevron print"
+    "alt": "Slate grey urban t-shirt with a white chevron print",
+    "description": "Slate grey tee with a bold white chevron print. Built for long days above the street — soft enough to sleep in, sturdy enough to work in."
   },
   {
-    "id": "harbour-line-tee",
+    "id": "5",
     "name": "Harbour Line Tee",
     "price": 29.99,
     "image": "/products/harbour-line-tee.svg",
-    "alt": "Teal urban t-shirt with a white wave print"
+    "alt": "Teal urban t-shirt with a white wave print",
+    "description": "Deep teal tee with a white wave print pulled from the harbour wall. Relaxed through the body with a clean, straight hem."
   },
   {
-    "id": "metro-dusk-tee",
+    "id": "6",
     "name": "Metro Dusk Tee",
     "price": 31.25,
     "image": "/products/metro-dusk-tee.svg",
-    "alt": "Purple urban t-shirt with a sunburst print"
+    "alt": "Purple urban t-shirt with a sunburst print",
+    "description": "Purple tee with a sunburst print for the tail end of the day. Soft combed cotton with a slightly longer back."
   },
   {
-    "id": "subway-signal-tee",
+    "id": "7",
     "name": "Subway Signal Tee",
     "price": 26.75,
     "image": "/products/subway-signal-tee.svg",
-    "alt": "Dark green urban t-shirt with a red dot print"
+    "alt": "Dark green urban t-shirt with a red dot print",
+    "description": "Dark green tee with a red signal-dot print. The everyday one: mid-weight cotton, regular fit, and a colour that hides a commute."
   },
   {
-    "id": "alley-neon-tee",
+    "id": "8",
     "name": "Alley Neon Tee",
     "price": 33.5,
     "image": "/products/alley-neon-tee.svg",
-    "alt": "Charcoal urban t-shirt with pink diagonal bars"
+    "alt": "Charcoal urban t-shirt with pink diagonal bars",
+    "description": "Charcoal tee with bright pink diagonal bars. A loud print on a quiet base, for anyone who dresses to be noticed."
   },
   {
-    "id": "urban-fade-tee",
+    "id": "9",
     "name": "Urban Fade Tee",
     "price": 28.99,
     "image": "/products/urban-fade-tee.svg",
-    "alt": "Olive green urban t-shirt with a lime square print"
+    "alt": "Olive green urban t-shirt with a lime square print",
+    "description": "Faded olive tee with a lime square print. Washed cotton with a broken-in hand feel from day one."
   },
   {
-    "id": "platform-nine-tee",
+    "id": "10",
     "name": "Platform Nine Tee",
     "price": 35,
     "image": "/products/platform-nine-tee.svg",
-    "alt": "Black urban t-shirt with a concentric ring print"
+    "alt": "Black urban t-shirt with a concentric ring print",
+    "description": "Black tee with a concentric ring print inspired by platform signage. Cut for movement, with a slightly dropped shoulder."
   },
   {
-    "id": "rust-district-tee",
+    "id": "11",
     "name": "Rust District Tee",
     "price": 30.5,
     "image": "/products/rust-district-tee.svg",
-    "alt": "Rust orange urban t-shirt with a brick pattern print"
+    "alt": "Rust orange urban t-shirt with a brick pattern print",
+    "description": "Rust orange tee with a brick pattern print. Warm-toned cotton that looks good under a denim jacket."
   },
   {
-    "id": "night-shift-tee",
+    "id": "12",
     "name": "Night Shift Tee",
     "price": 29.5,
     "image": "/products/night-shift-tee.svg",
-    "alt": "Near-black urban t-shirt with scattered blue dots"
+    "alt": "Near-black urban t-shirt with scattered blue dots",
+    "description": "Near-black tee with scattered blue dots for the night shift. Matte finish, relaxed fit, and a print that catches low light."
   }
 ]

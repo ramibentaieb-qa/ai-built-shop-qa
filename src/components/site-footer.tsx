@@ -7,7 +7,7 @@ export function SiteFooter() {
         <p>
           {SHOP_NAME} — a mock shop for QA testing. No real orders, payments or customer data.
         </p>
-        <p className="text-ink-muted/80">Story 2 · Product list</p>
+        <p className="text-ink-muted/80">Story 3 · Product detail</p>
       </div>
     </footer>
   );
