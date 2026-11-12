@@ -10,8 +10,6 @@ const MAX_QUANTITY = 10;
 export function ProductPurchasePanel() {
   const [size, setSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(MIN_QUANTITY);
-  const [showSizeError, setShowSizeError] = useState(false);
-  const [notice, setNotice] = useState<string | null>(null);
 
   function decreaseQuantity() {
     setQuantity((current) => Math.max(MIN_QUANTITY, current - 1));
@@ -19,17 +17,6 @@ export function ProductPurchasePanel() {
 
   function increaseQuantity() {
     setQuantity((current) => Math.min(MAX_QUANTITY, current + 1));
-  }
-
-  function handleAddToCart() {
-    if (!size) {
-      setShowSizeError(true);
-      setNotice(null);
-      return;
-    }
-
-    setShowSizeError(false);
-    setNotice("Cart support arrives in the next story — nothing was added.");
   }
 
   return (
@@ -48,10 +35,7 @@ export function ProductPurchasePanel() {
                 data-testid={`size-option-${option}`}
                 checked={size === option}
                 aria-checked={size === option}
-                onChange={() => {
-                  setSize(option);
-                  setShowSizeError(false);
-                }}
+                onChange={() => setSize(option)}
                 className="peer absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-lg border border-line bg-surface checked:border-brand checked:bg-brand"
               />
               <span className="pointer-events-none relative z-10 inline-flex min-h-11 min-w-12 items-center justify-center rounded-lg px-4 text-sm font-semibold text-ink transition-colors peer-checked:text-brand-contrast">
@@ -61,16 +45,6 @@ export function ProductPurchasePanel() {
           ))}
         </div>
       </fieldset>
-
-      {showSizeError ? (
-        <p
-          data-testid="size-error"
-          role="alert"
-          className="mt-3 text-sm font-semibold text-red-700 dark:text-red-400"
-        >
-          Please choose a size first.
-        </p>
-      ) : null}
 
       <div className="mt-6">
         <p
@@ -117,18 +91,17 @@ export function ProductPurchasePanel() {
         </div>
       </div>
 
+      {/*
+        Adding to the cart is the next story. The button is here so the page can
+        be tested, but it does nothing yet.
+      */}
       <button
         type="button"
         data-testid="add-to-cart"
-        onClick={handleAddToCart}
         className="mt-8 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-6 py-3 text-sm font-semibold text-brand-contrast transition-colors hover:bg-brand-strong sm:w-auto"
       >
         Add to cart
       </button>
-
-      <p aria-live="polite" className="mt-3 min-h-5 text-sm text-ink-muted">
-        {notice}
-      </p>
     </div>
   );
 }
