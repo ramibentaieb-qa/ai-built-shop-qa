@@ -35,3 +35,8 @@ Products, search, cart logic, checkout, login, and any database. Do not implemen
 
 ### Out of scope
 Search, filters, product detail page, add to cart, cart page, checkout, login, and any database. Product data may live in one local file.
+
+
+
+## Locator naming
+`nav-products`, `nav-cart`, `cart-badge`, `product-list`, `product-card-{id}`, `product-name-{id}`, `product-price-{id}`, `product-title`, `product-price`, `size-option-{S|M|L|XL}`, `quantity-increase`, `quantity-decrease`, `quantity-value`, `add-to-cart`, `size-error`.

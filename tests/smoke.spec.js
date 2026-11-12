@@ -23,8 +23,6 @@ test.describe('Testing First Setup', () => {
         await expect(page).toHaveURL(/\/cart/);
 
         const cartPage = new CartPage(page);
-        // const heading = await cartPage.getCartTitle();
-        // expect(heading).toContain('Your cart');
         await expect(cartPage.cartHeading).toHaveText('Your cart')
 
     })
