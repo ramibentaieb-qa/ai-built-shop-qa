@@ -81,16 +81,18 @@ database are **not** implemented in this story. They arrive in later stories.
   name or image on `/products` opens it.
 - The detail page shows the product title, price, description and image, plus size options
   (S, M, L, XL), a quantity selector and an **Add to cart** button.
-- The quantity starts at 1; **+** goes up to 10 and **−** goes down to 1, and the buttons stop
-  at those limits.
+- The quantity starts at 1. **+** increases it by one up to 10 and **−** decreases it by one down
+  to 1; at those limits the matching button is disabled. The quantity itself is read-only and
+  cannot be typed into.
+- Only one size can be selected at a time, and the selected size is marked.
 - An unknown id such as `/products/999` returns a real **404** with the "Page not found" page.
 - A **Back to products** link returns to `/products`.
 
 ### Deliberately out of scope for Story 3
 
-Adding to the cart, reviews, image galleries and the database are **not** implemented in this
-story. The **Add to cart** button is present but does not add anything yet — it asks for a size
-first and then says the cart arrives in the next story.
+Adding to the cart, the "Please select a size" message, the cart badge, reviews, image galleries
+and the database are **not** implemented in this story. The **Add to cart** button is present but
+does nothing yet — that is the next story.
 
 ## Project structure
 
@@ -129,6 +131,8 @@ public/
 - Locators on the detail page: `product-title`, `product-price`, `product-description`,
   `product-image`, `size-option-S`, `size-option-M`, `size-option-L`, `size-option-XL`,
   `quantity-value`, `quantity-increase`, `quantity-decrease`, `add-to-cart`,
-  `back-to-products`, and `size-error` when no size is chosen.
+  `back-to-products`.
+- The quantity value is a read-only field: it reads as text *and* as a value, but it cannot be
+  typed into.
 - Product ids are the numbers `1` to `12`; any other id is a 404.
 - The branch for this work is `feature/product-detail`; `main` is left untouched.
