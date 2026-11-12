@@ -5,10 +5,17 @@ import { usePathname } from "next/navigation";
 
 import { SHOP_NAME } from "@/lib/shop";
 
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/cart", label: "Cart" },
-] as const;
+type NavLink = {
+  href: string;
+  label: string;
+  testId?: string;
+};
+
+const NAV_LINKS: NavLink[] = [
+  { href: "/", label: "Home", testId: "nav-home" },
+  { href: "/products", label: "Products", testId: "nav-products" },
+  { href: "/cart", label: "Cart", testId: "nav-cart" },
+];
 
 function ShopMark() {
   return (
@@ -54,6 +61,7 @@ export function SiteHeader() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    data-testid={link.testId}
                     aria-current={isActive ? "page" : undefined}
                     className={`inline-flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                       isActive

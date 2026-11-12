@@ -1,0 +1,86 @@
+[
+  {
+    "id": "midnight-grid-tee",
+    "name": "Midnight Grid Tee",
+    "price": 29.99,
+    "image": "/products/midnight-grid-tee.svg",
+    "alt": "Navy blue urban t-shirt with a teal grid print"
+  },
+  {
+    "id": "concrete-stripe-tee",
+    "name": "Concrete Stripe Tee",
+    "price": 32.5,
+    "image": "/products/concrete-stripe-tee.svg",
+    "alt": "Concrete grey urban t-shirt with white horizontal stripes"
+  },
+  {
+    "id": "neon-transit-tee",
+    "name": "Neon Transit Tee",
+    "price": 27,
+    "image": "/products/neon-transit-tee.svg",
+    "alt": "Black urban t-shirt with a neon yellow circle print"
+  },
+  {
+    "id": "rooftop-static-tee",
+    "name": "Rooftop Static Tee",
+    "price": 34,
+    "image": "/products/rooftop-static-tee.svg",
+    "alt": "Slate grey urban t-shirt with a white chevron print"
+  },
+  {
+    "id": "harbour-line-tee",
+    "name": "Harbour Line Tee",
+    "price": 29.99,
+    "image": "/products/harbour-line-tee.svg",
+    "alt": "Teal urban t-shirt with a white wave print"
+  },
+  {
+    "id": "metro-dusk-tee",
+    "name": "Metro Dusk Tee",
+    "price": 31.25,
+    "image": "/products/metro-dusk-tee.svg",
+    "alt": "Purple urban t-shirt with a sunburst print"
+  },
+  {
+    "id": "subway-signal-tee",
+    "name": "Subway Signal Tee",
+    "price": 26.75,
+    "image": "/products/subway-signal-tee.svg",
+    "alt": "Dark green urban t-shirt with a red dot print"
+  },
+  {
+    "id": "alley-neon-tee",
+    "name": "Alley Neon Tee",
+    "price": 33.5,
+    "image": "/products/alley-neon-tee.svg",
+    "alt": "Charcoal urban t-shirt with pink diagonal bars"
+  },
+  {
+    "id": "urban-fade-tee",
+    "name": "Urban Fade Tee",
+    "price": 28.99,
+    "image": "/products/urban-fade-tee.svg",
+    "alt": "Olive green urban t-shirt with a lime square print"
+  },
+  {
+    "id": "platform-nine-tee",
+    "name": "Platform Nine Tee",
+    "price": 35,
+    "image": "/products/platform-nine-tee.svg",
+    "alt": "Black urban t-shirt with a concentric ring print"
+  },
+  {
+    "id": "rust-district-tee",
+    "name": "Rust District Tee",
+    "price": 30.5,
+    "image": "/products/rust-district-tee.svg",
+    "alt": "Rust orange urban t-shirt with a brick pattern print"
+  },
+  {
+    "id": "night-shift-tee",
+    "name": "Night Shift Tee",
+    "price": 29.5,
+    "image": "/products/night-shift-tee.svg",
+    "alt": "Near-black urban t-shirt with scattered blue dots"
+  }
+]

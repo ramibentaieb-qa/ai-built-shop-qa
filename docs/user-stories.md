@@ -18,3 +18,25 @@
 
 ### Out of scope
 Products, search, cart logic, checkout, login, and any database. Do not implement these in this story.
+
+
+## Story 2: Product List
+
+**As a** shopper,
+**I want** to browse a list of t-shirts,
+**so that** I can see what is available and choose one to look at.
+
+### Acceptance Criteria
+1. Every page has a "Products" link in the header (`data-testid="nav-products"`). Clicking it opens `/products`.
+2. `/products` shows exactly 12 products (male urban t-shirts), each with a unique name.
+3. Each product card shows an image (with meaningful alt text), the product name, and the price in one consistent format (for example `$29.99`).
+4. The page displays correctly at 375px and 1440px width (no overlap, no horizontal scrolling).
+5. Locators follow the naming list below.
+
+### Out of scope
+Search, filters, product detail page, add to cart, cart page, checkout, login, and any database. Product data may live in one local file.
+
+
+
+## Locator naming
+`nav-products`, `nav-cart`, `cart-badge`, `product-list`, `product-card-{id}`, `product-name-{id}`, `product-price-{id}`, `product-title`, `product-price`, `size-option-{S|M|L|XL}`, `quantity-increase`, `quantity-decrease`, `quantity-value`, `add-to-cart`, `size-error`.

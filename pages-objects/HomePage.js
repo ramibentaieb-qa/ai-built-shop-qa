@@ -17,6 +17,10 @@ class HomePage extends BasePage{
         await this.click('li a[href="/cart"]');
     }
 
+    async clickProductsLink() {
+        await this.click('a[data-testid="nav-products"]');
+    }
+
 
 
 
