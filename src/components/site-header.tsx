@@ -12,9 +12,9 @@ type NavLink = {
 };
 
 const NAV_LINKS: NavLink[] = [
-  { href: "/", label: "Home" },
+  { href: "/", label: "Home", testId: "nav-home" },
   { href: "/products", label: "Products", testId: "nav-products" },
-  { href: "/cart", label: "Cart" },
+  { href: "/cart", label: "Cart", testId: "nav-cart" },
 ];
 
 function ShopMark() {
