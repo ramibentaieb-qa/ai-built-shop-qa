@@ -19,6 +19,7 @@
 ### Out of scope
 Products, search, cart logic, checkout, login, and any database. Do not implement these in this story.
 
+---
 
 ## Story 2: Product List
 
@@ -35,6 +36,24 @@ Products, search, cart logic, checkout, login, and any database. Do not implemen
 
 ### Out of scope
 Search, filters, product detail page, add to cart, cart page, checkout, login, and any database. Product data may live in one local file.
+
+----
+
+## Story 3: Product Detail
+
+**As a** shopper,
+**I want** to open a product,
+**so that** I can read its details and choose size and quantity.
+
+### Acceptance Criteria
+1. Clicking a product name or image on `/products` opens `/products/{id}` (for example `/products/1`).
+2. The detail page shows the title, price, description, at least one image (with alt text), the sizes S, M, L and XL, a quantity selector and an "Add to cart" button.
+3. The quantity starts at 1. The "+" button increases it by 1 up to a maximum of 10, and the "−" button decreases it by 1 down to a minimum of 1.
+4. An unknown id (for example `/products/999`) shows the "Page not found" page with status 404.
+5. A "Back to products" link returns to `/products`.
+
+### Out of scope
+Adding to the cart (next story), reviews, image galleries, and any database.
 
 
 
