@@ -84,27 +84,33 @@ export function ProductPurchasePanel() {
             type="button"
             data-testid="quantity-decrease"
             onClick={decreaseQuantity}
+            disabled={quantity <= MIN_QUANTITY}
             aria-label="Decrease quantity"
-            aria-disabled={quantity <= MIN_QUANTITY}
-            className="inline-flex size-11 items-center justify-center rounded-md text-lg font-semibold text-ink transition-colors hover:bg-surface-muted aria-disabled:opacity-40 aria-disabled:hover:bg-transparent"
+            className="inline-flex size-11 items-center justify-center rounded-md text-lg font-semibold text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
           >
             −
           </button>
-          <output
+          {/*
+            A read-only textarea, not an input: the value can be read as text
+            and as a value, but it can never be typed into.
+          */}
+          <textarea
             data-testid="quantity-value"
             aria-labelledby="quantity-label"
             aria-live="polite"
-            className="min-w-8 text-center text-base font-semibold text-ink tabular-nums"
-          >
-            {quantity}
-          </output>
+            rows={1}
+            readOnly
+            tabIndex={-1}
+            value={quantity}
+            className="h-11 min-w-8 max-w-8 resize-none overflow-hidden border-0 bg-transparent p-0 text-center text-base font-semibold leading-[44px] text-ink tabular-nums"
+          />
           <button
             type="button"
             data-testid="quantity-increase"
             onClick={increaseQuantity}
+            disabled={quantity >= MAX_QUANTITY}
             aria-label="Increase quantity"
-            aria-disabled={quantity >= MAX_QUANTITY}
-            className="inline-flex size-11 items-center justify-center rounded-md text-lg font-semibold text-ink transition-colors hover:bg-surface-muted aria-disabled:opacity-40 aria-disabled:hover:bg-transparent"
+            className="inline-flex size-11 items-center justify-center rounded-md text-lg font-semibold text-ink transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent"
           >
             +
           </button>
