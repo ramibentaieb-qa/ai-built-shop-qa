@@ -83,7 +83,7 @@ export default async function ProductDetailPage({ params }: ProductDetailProps) 
             {product.description}
           </p>
 
-          <ProductPurchasePanel />
+          <ProductPurchasePanel productId={product.id} />
         </div>
       </div>
     </div>

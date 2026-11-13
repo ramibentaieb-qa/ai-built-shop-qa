@@ -3,7 +3,8 @@
 # MiniMart — AI-Built Online Shop (QA base)
 
 A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 3: Product detail** on top of the Story 1 shell and the Story 2 product list.
+**Story 4: Add to cart and cart badge** on top of the Story 1 shell, the Story 2 product list
+and the Story 3 product detail page.
 
 ## Requirements
 
@@ -94,6 +95,26 @@ Adding to the cart, the "Please select a size" message, the cart badge, reviews,
 and the database are **not** implemented in this story. The **Add to cart** button is present but
 does nothing yet — that is the next story.
 
+## What Story 4 adds
+
+- The **Add to cart** button on a product page now works. Clicking it without picking a size shows
+  the message **"Please select a size"** (`data-testid="size-error"`); the message disappears as
+  soon as a size is selected. Nothing is added to the cart in that case.
+- With a size selected, the chosen quantity is added to the cart. The chosen size and quantity
+  stay as they are after adding.
+- A red **cart badge** (`data-testid="cart-badge"`) in the header, on top of the cart icon. It
+  shows the total number of items in the cart, and it is hidden while the cart is empty. More than
+  99 items shows `99+`.
+- The badge keeps its count when you move between pages (Home, Products, Product detail, Cart,
+  the 404 page) and when you use the browser back and forward buttons.
+- The cart is kept in the browser only (`localStorage`), so it survives a refresh. There is no
+  server, no API route and no database.
+
+### Deliberately out of scope for Story 4
+
+The contents of the cart page, removing items, changing quantities in the cart, checkout, login
+and the database are **not** implemented in this story. The cart page is still a placeholder.
+
 ## Project structure
 
 ```
@@ -107,15 +128,18 @@ src/
     not-found.tsx       # "Page not found" page
     globals.css         # Design tokens and base styles
   components/
-    site-header.tsx     # Header with Home / Products / Cart navigation
+    site-header.tsx     # Header with Home / Products / Cart navigation and the cart badge
     site-footer.tsx     # Footer
     product-card.tsx    # Product card: image, name, price
     product-purchase-panel.tsx # Sizes, quantity stepper, add to cart
+    cart-provider.tsx   # Shares the cart between the badge and the product page
   data/
     products.json       # The 12 products
   lib/
     shop.ts             # Shop name and tagline (single source of truth)
     products.ts         # Product types, lookup and price formatting
+    cart.ts             # Cart rules: counting items, the 99+ badge, adding an item
+    cart-store.ts       # Keeps the cart in the browser storage
 public/
   products/             # Product artwork (SVG)
 ```
@@ -135,4 +159,10 @@ public/
 - The quantity value is a read-only field: it reads as text *and* as a value, but it cannot be
   typed into.
 - Product ids are the numbers `1` to `12`; any other id is a 404.
-- The branch for this work is `feature/product-detail`; `main` is left untouched.
+- Locators for the cart: `nav-cart` (the cart link in the header), `cart-badge` (the number on
+  the cart icon), `add-to-cart` and `size-error`.
+- The badge text is the number only, for example `3` or `99+`. It is not in the DOM while the
+  cart is empty.
+- The cart lives in the browser under the `ai-built-shop-qa:cart:v1` key of `localStorage`. Clear
+  that key to start from an empty cart.
+- The branch for this work is `feature/add-to-cart`; `main` is left untouched.

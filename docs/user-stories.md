@@ -61,7 +61,25 @@ Search, filters, product detail page, add to cart, cart page, checkout, login, a
 ### Out of scope
 Adding to the cart (the "Add to cart" button may exist but does nothing yet), the "Please select a size" message, the cart badge, reviews, image galleries, and any database.
 
+## Story 4: Add to Cart and Cart Badge
 
+**As a** shopper,
+**I want** to add a product to my cart,
+**so that** I can see how many items I have chosen.
 
-## Locator naming
-`nav-products`, `nav-cart`, `cart-badge`, `product-list`, `product-card-{id}`, `product-name-{id}`, `product-price-{id}`, `product-title`, `product-price`, `size-option-{S|M|L|XL}`, `quantity-increase`, `quantity-decrease`, `quantity-value`, `add-to-cart`, `size-error`.
+### Acceptance Criteria
+1. If no size is selected, clicking "Add to cart" shows the message "Please select a size" (`size-error`) and the badge does not change. The message disappears as soon as a size is selected.
+2. With a size selected, clicking "Add to cart" adds the chosen quantity, and the badge shows the total number of items in the cart.
+3. The badge is red, appears above the cart icon in the header, and is hidden when the cart is empty.
+4. Adding more items increases the total (for example 2 added, then 1 more, shows 3). This is true for the same product and size, the same product in another size, and different products.
+5. The badge keeps its count when moving between pages (Home, Products, Product detail, Cart, 404) and when using the browser back and forward buttons.
+6. The badge keeps its count after refreshing the page (stored in the browser, no database).
+7. If the total is above 99, the badge shows `99+`.
+8. After adding, the selected size and quantity stay as they are.
+9. The badge is displayed correctly at 375px and 1440px width.
+
+### Locators
+`nav-cart` (existing), `cart-badge`, `add-to-cart`, `size-error`. The badge text is the number only.
+
+### Out of scope
+The contents of the cart page, removing items, changing quantities in the cart, checkout, login, and any database.
