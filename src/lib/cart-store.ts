@@ -8,7 +8,14 @@
  * again after hydration and the page never mixes server and browser markup.
  */
 
-import { CART_STORAGE_KEY, addCartItem, parseCartItems, type CartItem } from "@/lib/cart";
+import {
+  CART_STORAGE_KEY,
+  addCartItem,
+  clampLineQuantity,
+  mergeCartItems,
+  parseCartItems,
+  type CartItem,
+} from "@/lib/cart";
 
 type Listener = () => void;
 
@@ -77,7 +84,8 @@ function handleStorageChange(): void {
 export function getCartItems(): CartItem[] {
   if (!cacheValid) {
     cachedRaw = readStoredCart();
-    cachedItems = parseCartItems(cachedRaw);
+    // One line per product and size, whatever the stored cart looked like.
+    cachedItems = mergeCartItems(parseCartItems(cachedRaw));
     cacheValid = true;
   }
 
@@ -92,5 +100,27 @@ export function getServerCartItems(): CartItem[] {
 /** Put an item in the cart and tell the app about it. */
 export function addItemToCart(item: CartItem): void {
   writeStoredCart(addCartItem(getCartItems(), item));
+  notifyListeners();
+}
+
+/** Change how many items one line holds, between the lowest and highest value. */
+export function setCartItemQuantity(productId: string, size: string, quantity: number): void {
+  const items = getCartItems().map((item) =>
+    item.productId === productId && item.size === size
+      ? { ...item, quantity: clampLineQuantity(quantity) }
+      : item,
+  );
+
+  writeStoredCart(items);
+  notifyListeners();
+}
+
+/** Take one line out of the cart. */
+export function removeCartItem(productId: string, size: string): void {
+  const items = getCartItems().filter(
+    (item) => !(item.productId === productId && item.size === size),
+  );
+
+  writeStoredCart(items);
   notifyListeners();
 }
