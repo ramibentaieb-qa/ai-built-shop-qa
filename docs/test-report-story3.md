@@ -4,6 +4,6 @@
 | AC #2     | ok      |           |   
 | AC #3     | ok      |           |   
 | AC #4     | ok      |           | 
-| AC #5     | ko      |           |
-| AC #6     | ko      |           |
-| AC #7     | ko      |           |
+| AC #5     | ok      |           |
+| AC #6     | ok      |           |
+| AC #7     | ok      |           |

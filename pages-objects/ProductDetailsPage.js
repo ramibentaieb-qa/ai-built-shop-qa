@@ -8,6 +8,7 @@ class ProductDetailsPage extends BasePage {
         this.sizeM = page.getByTestId('size-option-M');
         this.sizeL = page.getByTestId('size-option-L');
         this.sizeXL = page.getByTestId('size-option-XL');
+
     }
 
 
@@ -26,6 +27,39 @@ class ProductDetailsPage extends BasePage {
     async isSizeSelected(size) {
         return await this.page.locator(`input[data-testid='size-option-${size}']`).isChecked();
     }
+
+    async clickDecreaseButtton() {
+        await this.click('button[data-testId="quantity-decrease"]');
+    }
+
+    async clickIncreaseButton() {
+        await this.click('button[data-testId="quantity-increase"]');
+    }
+
+    async increaseQuantity(times) {
+        for (let i = 0; i < times; i++) {
+            await this.clickIncreaseButton();
+        }
+    }
+
+    async addToCartTimes(times) {
+        for (let i = 0; i < times; i++) {
+            await this.clickAddToCartButton();
+        }
+    }
+
+    async clickAddToCartButton() {
+        await this.click('button[data-testId="add-to-cart"]');
+    }
+
+    async getErrorMessage() {
+        return await this.getText('p[data-testId="size-error"]');
+    }
+
+    getCartBadge() {
+        return this.page.locator('span[data-testId="cart-badge"]');
+    }
+
 
 }
 module.exports = ProductDetailsPage;
