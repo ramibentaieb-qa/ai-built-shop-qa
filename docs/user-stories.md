@@ -83,3 +83,26 @@ Adding to the cart (the "Add to cart" button may exist but does nothing yet), th
 
 ### Out of scope
 The contents of the cart page, removing items, changing quantities in the cart, checkout, login, and any database.
+
+## Story 5: Cart Page Items
+
+**As a** shopper,
+**I want** to see and edit the products in my cart,
+**so that** I can check my choices before paying.
+
+### Acceptance Criteria
+1. The cart page shows one line for each product and size combination that was added. The same product in two sizes appears as two lines.
+2. Each line shows the product name, image (with alt text), size, unit price, quantity and line total (unit price × quantity).
+3. Each line has "+" and "−" buttons. "+" increases the quantity by 1 up to 10 (disabled at 10). "−" decreases it by 1 down to 1 (disabled at 1).
+4. Changing the quantity updates the line total and the header badge immediately, without reloading the page.
+5. Each line has a "Remove" button. Removing a line removes it from the page and decreases the header badge by that line's quantity.
+6. When the cart is empty, the page shows "Your cart is empty" and a "Continue shopping" link to `/products`. The badge is hidden.
+7. The cart contents and quantity changes survive a page refresh.
+8. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+9. Money is shown with two decimals and a `$` sign (for example `$59.98`), with no rounding artifacts.
+
+### Locators
+`cart-item`, `cart-item-image`, `cart-item-name`, `cart-item-size`, `cart-item-price`, `cart-item-total`, `cart-item-quantity`, `cart-item-increase`, `cart-item-decrease`, `cart-item-remove`, `cart-empty`, `continue-shopping`, `cart-badge` (existing).
+
+### Out of scope
+Subtotal, discount, delivery fee and order total (next story), the checkout and payment pages, login, and any database.
