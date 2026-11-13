@@ -2,14 +2,24 @@
 
 import { useState } from "react";
 
+import { useCart } from "@/components/cart-provider";
+
 const SIZES = ["S", "M", "L", "XL"] as const;
 
 const MIN_QUANTITY = 1;
 const MAX_QUANTITY = 10;
 
-export function ProductPurchasePanel() {
+export function ProductPurchasePanel({ productId }: { productId: string }) {
   const [size, setSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(MIN_QUANTITY);
+  const [showSizeError, setShowSizeError] = useState(false);
+  const { addItem } = useCart();
+
+  function selectSize(option: string) {
+    setSize(option);
+    // The message is only needed while no size is selected.
+    setShowSizeError(false);
+  }
 
   function decreaseQuantity() {
     setQuantity((current) => Math.max(MIN_QUANTITY, current - 1));
@@ -17,6 +27,17 @@ export function ProductPurchasePanel() {
 
   function increaseQuantity() {
     setQuantity((current) => Math.min(MAX_QUANTITY, current + 1));
+  }
+
+  function addToCart() {
+    if (!size) {
+      setShowSizeError(true);
+      return;
+    }
+
+    addItem({ productId, size, quantity });
+
+    // The chosen size and quantity stay as they are after adding.
   }
 
   return (
@@ -35,7 +56,7 @@ export function ProductPurchasePanel() {
                 data-testid={`size-option-${option}`}
                 checked={size === option}
                 aria-checked={size === option}
-                onChange={() => setSize(option)}
+                onChange={() => selectSize(option)}
                 className="peer absolute inset-0 h-full w-full cursor-pointer appearance-none rounded-lg border border-line bg-surface checked:border-brand checked:bg-brand"
               />
               <span className="pointer-events-none relative z-10 inline-flex min-h-11 min-w-12 items-center justify-center rounded-lg px-4 text-sm font-semibold text-ink transition-colors peer-checked:text-brand-contrast">
@@ -44,6 +65,16 @@ export function ProductPurchasePanel() {
             </label>
           ))}
         </div>
+
+        {showSizeError && (
+          <p
+            data-testid="size-error"
+            role="alert"
+            className="mt-3 text-sm font-semibold text-danger-ink"
+          >
+            Please select a size
+          </p>
+        )}
       </fieldset>
 
       <div className="mt-6">
@@ -91,13 +122,10 @@ export function ProductPurchasePanel() {
         </div>
       </div>
 
-      {/*
-        Adding to the cart is the next story. The button is here so the page can
-        be tested, but it does nothing yet.
-      */}
       <button
         type="button"
         data-testid="add-to-cart"
+        onClick={addToCart}
         className="mt-8 inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand px-6 py-3 text-sm font-semibold text-brand-contrast transition-colors hover:bg-brand-strong sm:w-auto"
       >
         Add to cart
