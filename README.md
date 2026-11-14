@@ -3,8 +3,8 @@
 # MiniMart — AI-Built Online Shop (QA base)
 
 A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 6: Order summary and checkout link** on top of the Story 1 shell, the Story 2 product
-list, the Story 3 product detail page, the Story 4 cart and the Story 5 cart page.
+**Story 7: Registration** on top of the Story 1 shell, the Story 2 product list, the Story 3
+product detail page, the Story 4 cart, the Story 5 cart page and the Story 6 order summary.
 
 ## Requirements
 
@@ -156,6 +156,34 @@ the database are **not** implemented in this story. They arrive in later stories
 Discounts and coupons, real payment, a checkout form, login and the database are **not**
 implemented in this story. They arrive in later stories.
 
+## What Story 7 adds
+
+- A **Register** link in the header on every page (`data-testid="nav-register"`) that opens
+  `/register`.
+- A `/register` page with a form: **Full name**, **Email**, **Password** and **Confirm
+  password**, plus a **Create account** button.
+- A notice on the page: "Demo accounts are stored in this browser and deleted after 24 hours.
+  Do not use a real password."
+- Every field is required. An empty field shows a message under that field and no account is
+  created.
+- The email must look like `name@example.com`. The password needs at least 8 characters, and
+  the confirm password has to match it. Each mistake shows a message under the field.
+- An email that is already registered — upper and lower case do not matter — shows
+  **"This email is already registered"**, and no second account is created.
+- A good form creates the account, shows **"Account created"** and empties the form. The
+  shopper is **not** logged in and the cart is not changed.
+- Every account is kept in the browser with the time it was created. An account older than
+  24 hours is deleted when any page loads, and its email can be registered again.
+- The page works at 375px and 1440px width, and every control can be used with the keyboard
+  only.
+- There is no server and no database: the accounts live in `localStorage` and never leave the
+  browser.
+
+### Deliberately out of scope for Story 7
+
+Login, logout, protecting `/payment`, password recovery, email verification and any database
+are **not** implemented in this story. They arrive in later stories.
+
 ## Project structure
 
 ```
@@ -167,10 +195,11 @@ src/
     products/[id]/page.tsx # Product detail page
     cart/page.tsx       # Cart page
     payment/page.tsx    # Payment placeholder page
+    register/page.tsx   # Registration page
     not-found.tsx       # "Page not found" page
     globals.css         # Design tokens and base styles
   components/
-    site-header.tsx     # Header with Home / Products / Cart navigation and the cart badge
+    site-header.tsx     # Header with Home / Products / Register / Cart navigation and the cart badge
     site-footer.tsx     # Footer
     product-card.tsx    # Product card: image, name, price
     product-purchase-panel.tsx # Sizes, quantity stepper, add to cart
@@ -178,6 +207,8 @@ src/
     cart-view.tsx       # The cart page: the lines, or the empty cart message
     cart-line-item.tsx  # One line of the cart: image, name, size, price, quantity, total
     order-summary.tsx   # Subtotal, delivery fee, total and the checkout link
+    account-cleanup.tsx # Deletes demo accounts older than 24 hours, on every page load
+    register-form.tsx   # The registration form: fields, error messages, success message
   data/
     products.json       # The 12 products
   lib/
@@ -185,6 +216,8 @@ src/
     products.ts         # Product types, lookup and price formatting
     cart.ts             # Cart rules: counting items, the 99+ badge, money, adding an item
     cart-store.ts       # Keeps the cart in the browser storage
+    accounts.ts         # Account rules: email format, password length, the 24 hour lifetime
+    account-store.ts    # Keeps the demo accounts in the browser storage
 public/
   products/             # Product artwork (SVG)
 ```
@@ -229,4 +262,28 @@ public/
   Next.js copies that heading into its own screen reader announcer, so `getByText` finds two
   elements — use `getByRole("heading", { name: "Payment page coming soon" })` or read the `h1`
   instead.
-- The branch for this work is `feature/order-summary`; `main` is left untouched.
+- Locators for the registration: `nav-register` (the Register link in the header),
+  `register-name`, `register-email`, `register-password`, `register-confirm-password`,
+  `register-submit`, `register-error-name`, `register-error-email`, `register-error-password`,
+  `register-error-confirm` and `register-success`.
+- The element behind each registration locator: the four fields are `input`s, the button is a
+  `button`, the four error messages are `p`s and the success message is a `p`.
+- The `h1` of the register page is "Create an account" and the button says "Create account".
+- The error messages only show while they are needed. They are not in the DOM when the field
+  is fine.
+- The messages are: "Full name is required", "Email is required", "Please enter a valid email
+  address", "Password is required", "Password must be at least 8 characters", "Confirm password
+  is required", "Passwords do not match" and "This email is already registered". The success
+  message is "Account created".
+- A field that has a message also has `aria-invalid="true"`, and the first field with a message
+  gets the focus after sending the form.
+- The demo accounts live in the browser under the `ai-built-shop-qa:accounts:v1` key of
+  `localStorage`. Every account is stored as
+  `{ name, email, password, createdAt }`, with `createdAt` in milliseconds since the epoch. Clear
+  that key to start with no accounts.
+- The cleanup that deletes accounts older than 24 hours looks at every stored list of accounts,
+  not only at that key, so an account that was saved under another key name still expires.
+- An account is deleted 24 hours after it was created, and the deletion happens when any page
+  loads. To test it, save an account with a `createdAt` that is more than 24 hours old and load
+  a page: the account is gone and its email can be registered again.
+- The branch for this work is `feature/registration`; `main` is left untouched.
