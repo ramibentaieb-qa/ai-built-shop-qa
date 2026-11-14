@@ -4,30 +4,32 @@ const ProductDetailsPage = require('../pages-objects/ProductDetailsPage');
 const {test, expect} = require('@playwright/test');
 
 test.describe('Testing Product Details Page', () => {
+    let homePage;
+    let productsPage;
+    let productDetailsPage;
+
+    test.beforeEach(async({page}) => {
+        homePage = new HomePage(page);
+        productsPage = new ProductPage(page);
+        productDetailsPage = new ProductDetailsPage(page);
+
+        await homePage.openHomePage();
+        await homePage.clickProductsLink();
+    })
 
     test('Page Details Page Loads', async ({page}) => {
-        const homePage = new HomePage(page);
-        await homePage.openHomePage();
-        homePage.clickProductsLink();
 
-        const productsPage = new ProductPage(page);
         await productsPage.clickAProduct(1);
 
-        
         await expect(page).toHaveURL('http://localhost:3000/products/1');
 
-        const productsDetailsPage = new ProductDetailsPage(page);
-        await productsDetailsPage.clickReturnButton();
+        await productDetailsPage.clickReturnButton();
 
         await expect(page).toHaveURL('http://localhost:3000/products');
     })
 
     test('Product Details Page have name, price, image', async({page}) => {
-        const homePage = new HomePage(page);
-        await homePage.openHomePage();
-        homePage.clickProductsLink();
 
-        const productsPage = new ProductPage(page);
         await productsPage.clickAProduct(12);
 
         const image = page.getByAltText('Near-black urban t-shirt with scattered blue dots');
@@ -41,14 +43,9 @@ test.describe('Testing Product Details Page', () => {
     })
 
     test('Product Details Page size buttons sould be clickable only one', async({page}) => {
-        const homePage = new HomePage(page);
-        await homePage.openHomePage();
-        homePage.clickProductsLink();
 
-        const productsPage = new ProductPage(page);
         await productsPage.clickAProduct(5);
 
-        const productDetailsPage = new ProductDetailsPage(page);
         await productDetailsPage.selectSize('S');
 
         await expect(productDetailsPage.sizeS).toBeChecked();
@@ -57,7 +54,5 @@ test.describe('Testing Product Details Page', () => {
 
         await expect(productDetailsPage.sizeM).toBeChecked();
         await expect(productDetailsPage.sizeS).not.toBeChecked();
-
-
     })
 })
