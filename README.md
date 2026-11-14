@@ -1,10 +1,10 @@
-![Playwright Tests](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
+![CI Pipeline](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
 
 # MiniMart — AI-Built Online Shop (QA base)
 
 A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 5: Cart page items** on top of the Story 1 shell, the Story 2 product list, the
-Story 3 product detail page and the Story 4 cart.
+**Story 6: Order summary and checkout link** on top of the Story 1 shell, the Story 2 product
+list, the Story 3 product detail page, the Story 4 cart and the Story 5 cart page.
 
 ## Requirements
 
@@ -136,6 +136,26 @@ and the database are **not** implemented in this story. The cart page is still a
 The subtotal, discount, delivery fee and order total, the checkout and payment pages, login and
 the database are **not** implemented in this story. They arrive in later stories.
 
+## What Story 6 adds
+
+- An **order summary** below the items on the cart page, in this order: **Subtotal**,
+  **Delivery fee**, **Total**.
+- The subtotal is the sum of all line totals. The delivery fee is a flat **$5.00** as long as
+  the cart has items. The total is the subtotal plus the delivery fee, so a subtotal of $59.98
+  gives a total of $64.98.
+- The amounts follow the cart right away: changing a quantity or removing a line updates the
+  subtotal and the total immediately, without a reload.
+- A **Proceed to checkout** link opens `/payment`, a placeholder page that says
+  "Payment page coming soon".
+- When the cart is empty there is no order summary and no checkout link, only the empty cart
+  message.
+- The amounts use the same money format as the cart lines: a `$` sign and two decimals.
+
+### Deliberately out of scope for Story 6
+
+Discounts and coupons, real payment, a checkout form, login and the database are **not**
+implemented in this story. They arrive in later stories.
+
 ## Project structure
 
 ```
@@ -146,6 +166,7 @@ src/
     products/page.tsx   # Product list page
     products/[id]/page.tsx # Product detail page
     cart/page.tsx       # Cart page
+    payment/page.tsx    # Payment placeholder page
     not-found.tsx       # "Page not found" page
     globals.css         # Design tokens and base styles
   components/
@@ -156,6 +177,7 @@ src/
     cart-provider.tsx   # Shares the cart between the badge, the product page and the cart page
     cart-view.tsx       # The cart page: the lines, or the empty cart message
     cart-line-item.tsx  # One line of the cart: image, name, size, price, quantity, total
+    order-summary.tsx   # Subtotal, delivery fee, total and the checkout link
   data/
     products.json       # The 12 products
   lib/
@@ -200,4 +222,11 @@ public/
   as a value, but it cannot be typed into.
 - A line total is the unit price times the quantity, counted in cents, so `$29.99` × 3 is
   `$89.97`.
-- The branch for this work is `feature/cart-items`; `main` is left untouched.
+- Locators for the order summary: `cart-subtotal`, `cart-delivery`, `cart-total` and
+  `proceed-to-checkout`. The three amounts are `span`s and the checkout link is an `a`.
+- The order summary and the checkout link are only on the page while the cart has items.
+- The payment page says "Payment page coming soon" in its `h1`. After a click from the cart,
+  Next.js copies that heading into its own screen reader announcer, so `getByText` finds two
+  elements — use `getByRole("heading", { name: "Payment page coming soon" })` or read the `h1`
+  instead.
+- The branch for this work is `feature/order-summary`; `main` is left untouched.

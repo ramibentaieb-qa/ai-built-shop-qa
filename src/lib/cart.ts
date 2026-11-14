@@ -18,6 +18,9 @@ export const CART_STORAGE_KEY = "ai-built-shop-qa:cart:v1";
 export const MIN_LINE_QUANTITY = 1;
 export const MAX_LINE_QUANTITY = 10;
 
+/** The delivery fee is a flat fee, as long as there is something in the cart. */
+export const DELIVERY_FEE_CENTS = 500;
+
 /** The badge counts items, so every unit of a line counts as one item. */
 export function countItems(items: CartItem[]): number {
   return items.reduce((total, item) => total + item.quantity, 0);

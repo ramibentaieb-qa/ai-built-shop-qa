@@ -4,6 +4,8 @@ import Link from "next/link";
 
 import { CartLineItem } from "@/components/cart-line-item";
 import { useCart } from "@/components/cart-provider";
+import { OrderSummary } from "@/components/order-summary";
+import { DELIVERY_FEE_CENTS, lineTotalCents } from "@/lib/cart";
 import { getProduct } from "@/lib/products";
 
 /** The lines of the cart, or the empty cart message when there is nothing yet. */
@@ -25,16 +27,29 @@ export function CartView() {
     return <EmptyCart />;
   }
 
+  const subtotalCents = lines.reduce(
+    (total, line) => total + lineTotalCents(line.product.price, line.item.quantity),
+    0,
+  );
+
   return (
-    <ul className="mt-8 space-y-4">
-      {lines.map(({ item, product }) => (
-        <CartLineItem
-          key={`${item.productId}-${item.size}`}
-          item={item}
-          product={product}
-        />
-      ))}
-    </ul>
+    <>
+      <ul className="mt-8 space-y-4">
+        {lines.map(({ item, product }) => (
+          <CartLineItem
+            key={`${item.productId}-${item.size}`}
+            item={item}
+            product={product}
+          />
+        ))}
+      </ul>
+
+      <OrderSummary
+        subtotalCents={subtotalCents}
+        deliveryCents={DELIVERY_FEE_CENTS}
+        totalCents={subtotalCents + DELIVERY_FEE_CENTS}
+      />
+    </>
   );
 }
 

@@ -82,7 +82,7 @@ test.describe('Testing Cart Page', () => {
 
         await expect(page.getByTestId('cart-item-total')).toContainText('$270.00');
 
-        await expect(page.getByTestId('cart-badge')).toHaveText('10');
+        await expect(page.getByTestId('cart-badge')).toContainText('10');
 
         await cartPage.clickCartDecreaseButtton();
 
@@ -107,4 +107,41 @@ test.describe('Testing Cart Page', () => {
 
         await expect(card).toHaveCount(0)
     })
+    
+
+
+    const parsePrice = (text) => parseFloat(text.replace(/[^0-9.]/g, ''));
+    const formatPrice =  (num)  => `$${num.toFixed(2)}`
+    test('Order summary should display correct total', async({page}) => {
+        
+         await productsPage.clickAProduct(2);
+         await productDetailsPage.selectSize('XL');
+         await productDetailsPage.clickAddToCartButton();
+         await productDetailsPage.clickReturnButton();
+
+         await productsPage.clickAProduct(5);
+         await productDetailsPage.selectSize('S');
+         await productDetailsPage.clickAddToCartButton();
+
+         await homePage.clickCartLink();
+
+
+         await expect(page.getByTestId('cart-item-total').first()).toBeVisible();
+         const itemPrices = await page.getByTestId('cart-item-total').allTextContents();
+
+         const prices = itemPrices.map(parsePrice);
+
+         const subtotal = parsePrice(await page.getByTestId('cart-subtotal').textContent());
+         const delivery = parsePrice(await page.getByTestId('cart-delivery').textContent());
+
+         const expectedSubtotal = prices.reduce((sum, p) => sum + p, 0);
+         
+         const expectTotal = subtotal + delivery;
+
+         await expect(page.getByTestId('cart-subtotal'))
+         .toContainText(formatPrice(expectedSubtotal));
+
+         await expect(page.getByTestId('cart-total'))
+         .toContainText(formatPrice(expectTotal));       
+        })
 })

@@ -106,3 +106,23 @@ The contents of the cart page, removing items, changing quantities in the cart, 
 
 ### Out of scope
 Subtotal, discount, delivery fee and order total (next story), the checkout and payment pages, login, and any database.
+
+## Story 6: Order Summary and Checkout Link
+
+**As a** shopper,
+**I want** to see the full cost of my order,
+**so that** I know what I will pay before I continue.
+
+### Acceptance Criteria
+1. Below the items, the cart page shows in this order: Subtotal, Delivery fee, Total.
+2. Subtotal is the sum of all line totals. The delivery fee is a flat $5.00 when the cart has items. Total = Subtotal + Delivery fee (for example, a subtotal of $59.98 gives a total of $64.98).
+3. All amounts update immediately when a quantity changes or a line is removed.
+4. A "Proceed to checkout" link opens `/payment`, which shows a placeholder page with the text "Payment page coming soon".
+5. When the cart is empty, the order summary and the "Proceed to checkout" link are not shown.
+6. Amounts use the same money format as Story 5 (a `$` sign and two decimals).
+
+### Locators
+`cart-subtotal`, `cart-delivery`, `cart-total`, `proceed-to-checkout`.
+
+### Out of scope
+Discounts and coupons, real payment, a checkout form, login, and any database.
