@@ -16,6 +16,7 @@ type NavLink = {
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home", testId: "nav-home" },
   { href: "/products", label: "Products", testId: "nav-products" },
+  { href: "/register", label: "Register", testId: "nav-register" },
   { href: "/cart", label: "Cart", testId: "nav-cart" },
 ];
 
@@ -78,7 +79,7 @@ export function SiteHeader() {
         </Link>
 
         <nav aria-label="Main" className="w-full sm:w-auto">
-          <ul className="flex items-center gap-1 sm:gap-2">
+          <ul className="flex flex-wrap items-center gap-1 sm:gap-2">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               const isCart = link.href === "/cart";
