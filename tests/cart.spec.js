@@ -5,7 +5,7 @@ const ProductDetailsPage = require('../pages-objects/ProductDetailsPage');
 const CartPage = require('../pages-objects/CartPage');
 
 test.describe('Testing Cart Page', () => {
-
+    
     let homePage;
     let productsPage;
     let productDetailsPage;

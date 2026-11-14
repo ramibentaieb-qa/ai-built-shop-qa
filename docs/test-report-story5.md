@@ -10,4 +10,4 @@
 | AC #8     |  ok     |           |
 | AC #9     |  ok     |           |
 
-Note: As the buttons located at the nav-bar are increasing, it is expected to display them inside a hamburger button when the page is displayd at the 425px width. the current build is not applying.
+Observation: at 425px the header shows all links in the main bar, with no hamburger menu. No overlap or cut-off was found (criterion 8 passes at 375px and 1440px). Suggested improvement for a future story.
