@@ -1,4 +1,4 @@
-![Playwright Tests](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
+![CI Pipeline](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
 
 # MiniMart — AI-Built Online Shop (QA base)
 
