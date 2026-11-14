@@ -14,6 +14,8 @@ import {
   addItemToCart,
   getCartItems,
   getServerCartItems,
+  removeCartItem,
+  setCartItemQuantity,
   subscribeToCart,
 } from "@/lib/cart-store";
 
@@ -21,7 +23,11 @@ type CartContextValue = {
   items: CartItem[];
   /** Total number of items in the cart, the number the badge shows. */
   count: number;
+  /** False until the cart stored in the browser has been read. */
+  ready: boolean;
   addItem: (item: CartItem) => void;
+  updateQuantity: (productId: string, size: string, quantity: number) => void;
+  removeItem: (productId: string, size: string) => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -34,15 +40,30 @@ const CartContext = createContext<CartContextValue | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const items = useSyncExternalStore(subscribeToCart, getCartItems, getServerCartItems);
 
+  // The server has no browser storage, so the cart is only known after hydration.
+  const ready = useSyncExternalStore(
+    subscribeToCart,
+    () => true,
+    () => false,
+  );
+
   const count = useMemo(() => countItems(items), [items]);
 
   const addItem = useCallback((item: CartItem) => {
     addItemToCart(item);
   }, []);
 
+  const updateQuantity = useCallback((productId: string, size: string, quantity: number) => {
+    setCartItemQuantity(productId, size, quantity);
+  }, []);
+
+  const removeItem = useCallback((productId: string, size: string) => {
+    removeCartItem(productId, size);
+  }, []);
+
   const value = useMemo<CartContextValue>(
-    () => ({ items, count, addItem }),
-    [items, count, addItem],
+    () => ({ items, count, ready, addItem, updateQuantity, removeItem }),
+    [items, count, ready, addItem, updateQuantity, removeItem],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

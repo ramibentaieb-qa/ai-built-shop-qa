@@ -3,23 +3,26 @@ const ProductsPage = require('../pages-objects/ProductsPage');
 const {test, expect} = require('@playwright/test');
 
 test.describe("Testing Products List", () => {
+    let homepage;
+    let productsPage;
 
-    test('Products Page Loads', async({page}) => {
-        const homepage = new HomePage(page);
+    test.beforeEach(async({page}) => {
+        homepage = new HomePage(page);
+        productsPage = new ProductsPage(page);
+
         await homepage.openHomePage();
         await homepage.clickProductsLink();
+    })
 
-        const productsPage = new ProductsPage(page);
+    test('Products Page Loads', async({page}) => {
+        
         const productsHeading = await productsPage.getProductsHeading();
         expect(productsHeading).toContain("Men's urban t-shirts");  
     })
 
 
     test('Products page should display all products cards with unique name, image, and price', async({page}) => {
-        const homepage = new HomePage(page);
-        await homepage.openHomePage();
-        await homepage.clickProductsLink();
-
+        
         const cards = page.getByTestId('product-card');
         await expect(cards).toHaveCount(12);
 

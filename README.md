@@ -3,8 +3,8 @@
 # MiniMart — AI-Built Online Shop (QA base)
 
 A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 4: Add to cart and cart badge** on top of the Story 1 shell, the Story 2 product list
-and the Story 3 product detail page.
+**Story 5: Cart page items** on top of the Story 1 shell, the Story 2 product list, the
+Story 3 product detail page and the Story 4 cart.
 
 ## Requirements
 
@@ -115,6 +115,27 @@ does nothing yet — that is the next story.
 The contents of the cart page, removing items, changing quantities in the cart, checkout, login
 and the database are **not** implemented in this story. The cart page is still a placeholder.
 
+## What Story 5 adds
+
+- The `/cart` page now shows what is really in the cart: one line for every product and size
+  combination. The same product in two sizes is two lines.
+- A line shows the product image (with alt text), the product name, the size, the unit price, the
+  quantity and the line total (unit price × quantity). The name links back to the product page.
+- Every line has its own **+** and **−** buttons. **+** raises the quantity by one up to 10 and is
+  disabled at 10, **−** lowers it by one down to 1 and is disabled at 1.
+- Changing the quantity updates the line total and the header badge right away, without a reload.
+- Every line has a **Remove** button. It takes the line away and lowers the badge by the
+  quantity of that line.
+- When the cart is empty the page shows **"Your cart is empty"** and a **Continue shopping** link
+  to `/products`. The badge is hidden.
+- The cart and the quantity changes are kept in the browser, so a refresh does not lose them.
+- Money is calculated in cents, so a line total never shows a rounding error.
+
+### Deliberately out of scope for Story 5
+
+The subtotal, discount, delivery fee and order total, the checkout and payment pages, login and
+the database are **not** implemented in this story. They arrive in later stories.
+
 ## Project structure
 
 ```
@@ -124,7 +145,7 @@ src/
     page.tsx            # Home page
     products/page.tsx   # Product list page
     products/[id]/page.tsx # Product detail page
-    cart/page.tsx       # Cart placeholder
+    cart/page.tsx       # Cart page
     not-found.tsx       # "Page not found" page
     globals.css         # Design tokens and base styles
   components/
@@ -132,13 +153,15 @@ src/
     site-footer.tsx     # Footer
     product-card.tsx    # Product card: image, name, price
     product-purchase-panel.tsx # Sizes, quantity stepper, add to cart
-    cart-provider.tsx   # Shares the cart between the badge and the product page
+    cart-provider.tsx   # Shares the cart between the badge, the product page and the cart page
+    cart-view.tsx       # The cart page: the lines, or the empty cart message
+    cart-line-item.tsx  # One line of the cart: image, name, size, price, quantity, total
   data/
     products.json       # The 12 products
   lib/
     shop.ts             # Shop name and tagline (single source of truth)
     products.ts         # Product types, lookup and price formatting
-    cart.ts             # Cart rules: counting items, the 99+ badge, adding an item
+    cart.ts             # Cart rules: counting items, the 99+ badge, money, adding an item
     cart-store.ts       # Keeps the cart in the browser storage
 public/
   products/             # Product artwork (SVG)
@@ -165,4 +188,16 @@ public/
   cart is empty.
 - The cart lives in the browser under the `ai-built-shop-qa:cart:v1` key of `localStorage`. Clear
   that key to start from an empty cart.
-- The branch for this work is `feature/add-to-cart`; `main` is left untouched.
+- Locators on the cart page: `cart-item`, `cart-item-image`, `cart-item-name`, `cart-item-size`,
+  `cart-item-price`, `cart-item-total`, `cart-item-quantity`, `cart-item-increase`,
+  `cart-item-decrease`, `cart-item-remove`, `cart-empty` and `continue-shopping`. The badge is
+  still `cart-badge`.
+- The element behind each cart locator: the line is an `li`, the image is an `img`, the name is an
+  `h2` with a link inside, the size and the unit price are `span`s, the quantity is a read-only
+  `textarea`, the line total is a `p`, the three buttons are `button`s, the empty message is a
+  `p` and the continue shopping link is an `a`.
+- The cart quantity is a read-only field, like the one on the product page: it reads as text *and*
+  as a value, but it cannot be typed into.
+- A line total is the unit price times the quantity, counted in cents, so `$29.99` × 3 is
+  `$89.97`.
+- The branch for this work is `feature/cart-items`; `main` is left untouched.
