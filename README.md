@@ -1,345 +1,123 @@
+# MiniMart: an AI-built online shop that I test
+
 ![CI Pipeline](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
 
-# MiniMart — AI-Built Online Shop (QA base)
+MiniMart is a small online shop built with Next.js. An AI coding agent (MiniMax Code) writes all the application code. I act as the QA lead: I write the requirements, test every story, report bugs, and decide whether a story is accepted.
 
-A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 8: Login and logout** on top of the Story 1 shell, the Story 2 product list, the Story 3
-product detail page, the Story 4 cart, the Story 5 cart page, the Story 6 order summary and the
-Story 7 registration.
+I'm a software tester looking for my first role inside a company, so I set this up to practise how a real team works. The code is not mine, and I don't pretend it is. The user stories, manual testing, bug reports, Playwright tests and CI pipeline are mine.
 
-## Requirements
+It's a mock shop. There are no real payments, no real customer data and no database.
 
-- Node.js 20.9 or newer (Node 22 LTS or newer recommended)
-- npm 10 or newer
+## How each feature gets built
 
-## 1. Install the dependencies
+1. I write a user story with numbered acceptance criteria in `docs/user-stories.md`.
+2. The agent builds that story and nothing else, on its own branch, following the rules in `AGENTS.md`.
+3. I test it by hand. That means every criterion, then my own exploratory checks: edge cases, keyboard use, small screens, console errors.
+4. Any defect becomes a GitHub Issue. The agent fixes it and I retest.
+5. I write the Playwright tests and run the whole suite to catch regressions.
+6. I open a pull request. I merge only when the pipeline is green.
+7. I write a short test report for the story in `docs/test-report-storyN.md`.
+
+## What is built
+
+| Story | Feature | Status |
+|---|---|---|
+| 1 | Project setup, home page, header, footer, 404 page | Done |
+| 2 | Product list (12 products) | Done |
+| 3 | Product detail page with size and quantity | Done |
+| 4 | Add to cart and cart badge (shows `99+` above 99) | Done |
+| 5 | Cart page: change quantities, remove items | Done |
+| 6 | Order summary and checkout link | Done |
+| 7 | Registration with demo accounts that expire after 24 hours | Done |
+| 8 | Login and logout | Done |
+| 9 | Automatic login after registration | Planned |
+| 10 | Checkout gate: `/payment` requires login | Planned |
+| 11 | Payment form and order confirmation | Planned |
+
+The full acceptance criteria are in [`docs/user-stories.md`](docs/user-stories.md).
+
+## How I test
+
+Every test traces back to an acceptance criterion. Beyond the criteria, I look at boundaries (quantity 1 and 10, a badge at 99 and at 100), invalid input, the browser back button, a second tab, screen widths of 375px and 1440px, and keyboard-only use.
+
+The automated tests use Playwright with JavaScript and the Page Object Model. Each test starts with an empty browser, so tests never depend on each other.
+
+The 24-hour account expiry would be painful to test in real time, so the tests move the browser clock forward with Playwright's `page.clock`.
+
+The agent isn't allowed to touch `tests/` or `pages-objects/`, and I treat its own checks as claims until I've verified them myself. When I wanted registration to log the user in automatically, I didn't call it a bug. The current behavior matched Story 7, so I wrote a new story (Story 9) instead of editing history.
+
+## Continuous integration
+
+The GitHub Actions pipeline in `.github/workflows/playwright.yml` runs on every pull request and every push to `main`.
+
+```
+lint ──┐
+       ├──> test (Playwright)
+build ─┘
+```
+
+`lint` and `build` run in parallel. `test` starts only when both pass, and it uploads the Playwright HTML report as an artifact.
+
+## Run it locally
+
+You need Node.js 20.9 or newer (22 LTS is better) and npm 10 or newer.
 
 ```bash
 npm install
-```
-
-## 2. Run the app in development
-
-```bash
 npm run dev
 ```
 
-Then open <http://localhost:3000> in your browser. Stop the server with `Ctrl+C`.
-
-## 3. Build for production
+Open http://localhost:3000. For a production build:
 
 ```bash
 npm run build
 npm run start
 ```
 
-`npm run build` creates an optimized production build in `.next/`, and `npm run start` serves
-that build on <http://localhost:3000>.
+## Run the tests
 
-## All available scripts
+```bash
+npx playwright install chromium   # first time only
+npx playwright test               # starts the app by itself
+npx playwright show-report
+```
 
-| Script            | What it does                                        |
-| ----------------- | --------------------------------------------------- |
-| `npm run dev`     | Starts the development server on port 3000          |
-| `npm run build`   | Creates the optimized production build in `.next/`  |
-| `npm run start`   | Serves the production build (run `build` first)    |
-| `npm run lint`    | Runs ESLint over the project                        |
+To run a single file:
 
-## What Story 1 delivers
+```bash
+npx playwright test tests/cart.spec.js
+```
 
-- A home page (`/`) showing the shop name, a short welcome message, and a header with
-  **Home** and **Cart** navigation links.
-- A Cart page (`/cart`) — an empty placeholder, no cart logic yet.
-- A clear **Page not found** page for unknown URLs such as `/abc123`.
-- A responsive layout that works on desktop and mobile widths, with light and dark colour
-  themes that follow the operating system preference.
-- A README with these instructions, and a root layout that adds the header and footer to
-  every page.
+To simulate CI on your machine (PowerShell):
 
-### Deliberately out of scope for Story 1
+```powershell
+$env:CI="true"; npx playwright test
+```
 
-Products, search, cart logic, checkout, login and the database were **not** implemented in
-Story 1. They arrive in later stories.
-
-## What Story 2 adds
-
-- A **Products** link in the header on every page (`data-testid="nav-products"`) that opens
-  `/products`.
-- A `/products` page listing exactly 12 men's urban t-shirts, each with an image, a unique name
-  and a price.
-- Product data in one local file, `src/data/products.json`, with the artwork in
-  `public/products/`.
-- A responsive product grid — one column on mobile, up to four on wide screens, with no
-  horizontal scrolling.
-
-### Deliberately out of scope for Story 2
-
-Search, filters, the product detail page, add-to-cart, cart logic, checkout, login and the
-database are **not** implemented in this story. They arrive in later stories.
-
-## What Story 3 adds
-
-- A product detail page at `/products/{id}` (for example `/products/1`). Clicking a product
-  name or image on `/products` opens it.
-- The detail page shows the product title, price, description and image, plus size options
-  (S, M, L, XL), a quantity selector and an **Add to cart** button.
-- The quantity starts at 1. **+** increases it by one up to 10 and **−** decreases it by one down
-  to 1; at those limits the matching button is disabled. The quantity itself is read-only and
-  cannot be typed into.
-- Only one size can be selected at a time, and the selected size is marked.
-- An unknown id such as `/products/999` returns a real **404** with the "Page not found" page.
-- A **Back to products** link returns to `/products`.
-
-### Deliberately out of scope for Story 3
-
-Adding to the cart, the "Please select a size" message, the cart badge, reviews, image galleries
-and the database are **not** implemented in this story. The **Add to cart** button is present but
-does nothing yet — that is the next story.
-
-## What Story 4 adds
-
-- The **Add to cart** button on a product page now works. Clicking it without picking a size shows
-  the message **"Please select a size"** (`data-testid="size-error"`); the message disappears as
-  soon as a size is selected. Nothing is added to the cart in that case.
-- With a size selected, the chosen quantity is added to the cart. The chosen size and quantity
-  stay as they are after adding.
-- A red **cart badge** (`data-testid="cart-badge"`) in the header, on top of the cart icon. It
-  shows the total number of items in the cart, and it is hidden while the cart is empty. More than
-  99 items shows `99+`.
-- The badge keeps its count when you move between pages (Home, Products, Product detail, Cart,
-  the 404 page) and when you use the browser back and forward buttons.
-- The cart is kept in the browser only (`localStorage`), so it survives a refresh. There is no
-  server, no API route and no database.
-
-### Deliberately out of scope for Story 4
-
-The contents of the cart page, removing items, changing quantities in the cart, checkout, login
-and the database are **not** implemented in this story. The cart page is still a placeholder.
-
-## What Story 5 adds
-
-- The `/cart` page now shows what is really in the cart: one line for every product and size
-  combination. The same product in two sizes is two lines.
-- A line shows the product image (with alt text), the product name, the size, the unit price, the
-  quantity and the line total (unit price × quantity). The name links back to the product page.
-- Every line has its own **+** and **−** buttons. **+** raises the quantity by one up to 10 and is
-  disabled at 10, **−** lowers it by one down to 1 and is disabled at 1.
-- Changing the quantity updates the line total and the header badge right away, without a reload.
-- Every line has a **Remove** button. It takes the line away and lowers the badge by the
-  quantity of that line.
-- When the cart is empty the page shows **"Your cart is empty"** and a **Continue shopping** link
-  to `/products`. The badge is hidden.
-- The cart and the quantity changes are kept in the browser, so a refresh does not lose them.
-- Money is calculated in cents, so a line total never shows a rounding error.
-
-### Deliberately out of scope for Story 5
-
-The subtotal, discount, delivery fee and order total, the checkout and payment pages, login and
-the database are **not** implemented in this story. They arrive in later stories.
-
-## What Story 6 adds
-
-- An **order summary** below the items on the cart page, in this order: **Subtotal**,
-  **Delivery fee**, **Total**.
-- The subtotal is the sum of all line totals. The delivery fee is a flat **$5.00** as long as
-  the cart has items. The total is the subtotal plus the delivery fee, so a subtotal of $59.98
-  gives a total of $64.98.
-- The amounts follow the cart right away: changing a quantity or removing a line updates the
-  subtotal and the total immediately, without a reload.
-- A **Proceed to checkout** link opens `/payment`, a placeholder page that says
-  "Payment page coming soon".
-- When the cart is empty there is no order summary and no checkout link, only the empty cart
-  message.
-- The amounts use the same money format as the cart lines: a `$` sign and two decimals.
-
-### Deliberately out of scope for Story 6
-
-Discounts and coupons, real payment, a checkout form, login and the database are **not**
-implemented in this story. They arrive in later stories.
-
-## What Story 7 adds
-
-- A **Register** link in the header on every page (`data-testid="nav-register"`) that opens
-  `/register`.
-- A `/register` page with a form: **Full name**, **Email**, **Password** and **Confirm
-  password**, plus a **Create account** button.
-- A notice on the page: "Demo accounts are stored in this browser and deleted after 24 hours.
-  Do not use a real password."
-- Every field is required. An empty field shows a message under that field and no account is
-  created.
-- The email must look like `name@example.com`. The password needs at least 8 characters, and
-  the confirm password has to match it. Each mistake shows a message under the field.
-- An email that is already registered — upper and lower case do not matter — shows
-  **"This email is already registered"**, and no second account is created.
-- A good form creates the account, shows **"Account created"** and empties the form. The
-  shopper is **not** logged in and the cart is not changed.
-- Every account is kept in the browser with the time it was created. An account older than
-  24 hours is deleted when any page loads, and its email can be registered again.
-- The page works at 375px and 1440px width, and every control can be used with the keyboard
-  only.
-- There is no server and no database: the accounts live in `localStorage` and never leave the
-  browser.
-
-### Deliberately out of scope for Story 7
-
-Login, logout, protecting `/payment`, password recovery, email verification and any database
-are **not** implemented in this story. They arrive in later stories.
-
-## What Story 8 adds
-
-- A **Login** link in the header (`data-testid="nav-login"`) that opens `/login`. It shows
-  next to the **Register** link, and both disappear while somebody is logged in.
-- A `/login` page with an **Email** field, a **Password** field and a **Log in** button. Both
-  fields are required; an empty field shows a message under that field.
-- The right email and the right password log the shopper in and send them to the home page. The
-  email is compared without regard to upper or lower case, the password is case-sensitive.
-- A wrong email and a wrong password both show the same message, **"Invalid email or
-  password"**, so it stays hidden which one was wrong. The shopper stays logged out.
-- A logged in shopper sees their full name and a **Logout** button in the header. Logging out
-  ends the session, sends them back to the home page and brings the **Login** and **Register**
-  links back.
-- The session lives in `sessionStorage`. It survives a refresh and a move between pages, and it
-  ends when the tab is closed. The accounts stay in `localStorage`, as in Story 7.
-- When the demo account expires after 24 hours, the session ends on the next page load and the
-  shopper reads **"Your demo account has expired, please register again"**. The message is
-  gone after registering a new account or logging in again.
-- Logging in and logging out do not touch the cart.
-- The page works at 375px and 1440px width, and every control can be used with the keyboard
-  only.
-
-### Deliberately out of scope for Story 8
-
-Protecting `/payment`, password recovery, "remember me", email verification and any database
-are **not** implemented in this story. They arrive in later stories.
+To reset the app by hand, clear the site data in your browser (F12, Application, Clear site data).
 
 ## Project structure
 
 ```
-src/
-  app/
-    layout.tsx          # Root layout: header, footer, fonts, metadata
-    page.tsx            # Home page
-    products/page.tsx   # Product list page
-    products/[id]/page.tsx # Product detail page
-    cart/page.tsx       # Cart page
-    payment/page.tsx    # Payment placeholder page
-    register/page.tsx   # Registration page
-    not-found.tsx       # "Page not found" page
-    globals.css         # Design tokens and base styles
-  components/
-    site-header.tsx     # Header with Home / Products / Register / Cart navigation and the cart badge
-    site-footer.tsx     # Footer
-    product-card.tsx    # Product card: image, name, price
-    product-purchase-panel.tsx # Sizes, quantity stepper, add to cart
-    cart-provider.tsx   # Shares the cart between the badge, the product page and the cart page
-    cart-view.tsx       # The cart page: the lines, or the empty cart message
-    cart-line-item.tsx  # One line of the cart: image, name, size, price, quantity, total
-    order-summary.tsx   # Subtotal, delivery fee, total and the checkout link
-    account-cleanup.tsx # Deletes demo accounts older than 24 hours, on every page load
-    register-form.tsx   # The registration form: fields, error messages, success message
-    session-provider.tsx # Shares the session between the header, the login form and the notice
-    session-expired-notice.tsx # The message about an expired demo account
-    login-form.tsx      # The login form: fields, error messages, wrong credentials message
-  data/
-    products.json       # The 12 products
-  lib/
-    shop.ts             # Shop name and tagline (single source of truth)
-    products.ts         # Product types, lookup and price formatting
-    cart.ts             # Cart rules: counting items, the 99+ badge, money, adding an item
-    cart-store.ts       # Keeps the cart in the browser storage
-    accounts.ts         # Account rules: email format, password length, the 24 hour lifetime
-    account-store.ts    # Keeps the demo accounts in the browser storage
-    session.ts          # Session rules: what a session holds and the expired message
-    session-store.ts    # Keeps the session in the browser session storage
-public/
-  products/             # Product artwork (SVG)
+src/                 Application code (AI-generated)
+public/products/     Product images (SVG)
+tests/               Playwright specs (mine)
+pages-objects/       Page Object classes (mine)
+docs/                Project brief, user stories, test reports
+.github/workflows/   CI pipeline
+AGENTS.md            Rules the AI agent follows
 ```
 
-## Notes for QA
+## Locators
 
-- The shop name lives in `src/lib/shop.ts` and feeds the header, footer, pages and metadata.
-- No API routes, database or environment variables are needed to run this story.
-- Product data lives in `src/data/products.json`; every price is formatted in one place
-  (`formatPrice` in `src/lib/products.ts`), so the `$12.34` format stays consistent.
-- Locators on the list page: `nav-products`, `product-list`, `product-card`, `product-image`,
-  `product-name`, `product-price`.
-- Locators on the detail page: `product-title`, `product-price`, `product-description`,
-  `product-image`, `size-option-S`, `size-option-M`, `size-option-L`, `size-option-XL`,
-  `quantity-value`, `quantity-increase`, `quantity-decrease`, `add-to-cart`,
-  `back-to-products`.
-- The quantity value is a read-only field: it reads as text *and* as a value, but it cannot be
-  typed into.
-- Product ids are the numbers `1` to `12`; any other id is a 404.
-- Locators for the cart: `nav-cart` (the cart link in the header), `cart-badge` (the number on
-  the cart icon), `add-to-cart` and `size-error`.
-- The badge text is the number only, for example `3` or `99+`. It is not in the DOM while the
-  cart is empty.
-- The cart lives in the browser under the `ai-built-shop-qa:cart:v1` key of `localStorage`. Clear
-  that key to start from an empty cart.
-- Locators on the cart page: `cart-item`, `cart-item-image`, `cart-item-name`, `cart-item-size`,
-  `cart-item-price`, `cart-item-total`, `cart-item-quantity`, `cart-item-increase`,
-  `cart-item-decrease`, `cart-item-remove`, `cart-empty` and `continue-shopping`. The badge is
-  still `cart-badge`.
-- The element behind each cart locator: the line is an `li`, the image is an `img`, the name is an
-  `h2` with a link inside, the size and the unit price are `span`s, the quantity is a read-only
-  `textarea`, the line total is a `p`, the three buttons are `button`s, the empty message is a
-  `p` and the continue shopping link is an `a`.
-- The cart quantity is a read-only field, like the one on the product page: it reads as text *and*
-  as a value, but it cannot be typed into.
-- A line total is the unit price times the quantity, counted in cents, so `$29.99` × 3 is
-  `$89.97`.
-- Locators for the order summary: `cart-subtotal`, `cart-delivery`, `cart-total` and
-  `proceed-to-checkout`. The three amounts are `span`s and the checkout link is an `a`.
-- The order summary and the checkout link are only on the page while the cart has items.
-- The payment page says "Payment page coming soon" in its `h1`. After a click from the cart,
-  Next.js copies that heading into its own screen reader announcer, so `getByText` finds two
-  elements — use `getByRole("heading", { name: "Payment page coming soon" })` or read the `h1`
-  instead.
-- Locators for the registration: `nav-register` (the Register link in the header),
-  `register-name`, `register-email`, `register-password`, `register-confirm-password`,
-  `register-submit`, `register-error-name`, `register-error-email`, `register-error-password`,
-  `register-error-confirm` and `register-success`.
-- The element behind each registration locator: the four fields are `input`s, the button is a
-  `button`, the four error messages are `p`s and the success message is a `p`.
-- The `h1` of the register page is "Create an account" and the button says "Create account".
-- The error messages only show while they are needed. They are not in the DOM when the field
-  is fine.
-- The messages are: "Full name is required", "Email is required", "Please enter a valid email
-  address", "Password is required", "Password must be at least 8 characters", "Confirm password
-  is required", "Passwords do not match" and "This email is already registered". The success
-  message is "Account created".
-- A field that has a message also has `aria-invalid="true"`, and the first field with a message
-  gets the focus after sending the form.
-- The demo accounts live in the browser under the `ai-built-shop-qa:accounts:v1` key of
-  `localStorage`. Every account is stored as
-  `{ name, email, password, createdAt }`, with `createdAt` in milliseconds since the epoch. Clear
-  that key to start with no accounts.
-- The cleanup that deletes accounts older than 24 hours looks at every stored list of accounts,
-  not only at that key, so an account that was saved under another key name still expires.
-- An account is deleted 24 hours after it was created, and the deletion happens when any page
-  loads. To test it, save an account with a `createdAt` that is more than 24 hours old and load
-  a page: the account is gone and its email can be registered again.
-- Locators for the login: `nav-login` (the Login link in the header), `login-email`,
-  `login-password`, `login-submit`, `login-error-email`, `login-error-password` and
-  `login-error`.
-- The element behind each login locator: the two fields are `input`s, the button is a
-  `button`, the two field messages are `p`s and the message about wrong credentials is a `p`.
-- The ids of the login messages are `login-email-error` and `login-password-error`, the same
-  pattern as `register-email-error` on the registration page. The message about wrong
-  credentials has the id `login-error`.
-- The `h1` of the login page is "Log in" and the button says "Log in".
-- The field messages are "Email is required" and "Password is required". The message for a
-  wrong email or a wrong password is "Invalid email or password" and it shows in
-  `login-error`, not in the field messages.
-- The field messages only show while they are needed. They are not in the DOM when the field
-  is fine.
-- Locators for the session in the header: `nav-user-name` (the full name of the shopper) and
-  `nav-logout` (the Logout button). The name is a `span` and the button is a `button`.
-- The message about an expired account has the locator `session-expired-message` and says
-  "Your demo account has expired, please register again". It is a `p` that sits below the
-  header on every page, and it is only there after the account expired.
-- The session lives in the browser under the `ai-built-shop-qa:session:v1` key of
-  `sessionStorage`, and it is stored as `{ email, name, createdAt }`. The message about the
-  expired account uses the `ai-built-shop-qa:session-expired:v1` key of the same storage. Clear
-  both to start without a session.
-- The branch for this work is `feature/login`; `main` is left untouched.
+The app uses `data-testid` attributes so tests don't depend on styling. The agreed names are listed in [`AGENTS.md`](AGENTS.md), for example `nav-cart`, `cart-badge`, `product-card`, `add-to-cart`, `cart-total` and `proceed-to-checkout`. In the tests I prefer `getByTestId` and role-based locators.
+
+## Limitations
+
+Demo accounts and the cart live in the browser's `localStorage`, and the login session lives in `sessionStorage`. Passwords are stored in plain text because this is a mock, so please don't enter a real one. Accounts are deleted 24 hours after they are created.
+
+## More documents
+
+- [`docs/project-brief.md`](docs/project-brief.md): scope and Definition of Done
+- [`docs/user-stories.md`](docs/user-stories.md): stories and acceptance criteria
+- `docs/test-report-story1.md` onward: test results for each story
