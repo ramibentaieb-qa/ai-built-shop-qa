@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useCart } from "@/components/cart-provider";
+import { useSession } from "@/components/session-provider";
 import { formatBadgeCount } from "@/lib/cart";
 import { SHOP_NAME } from "@/lib/shop";
 
@@ -16,9 +17,13 @@ type NavLink = {
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home", testId: "nav-home" },
   { href: "/products", label: "Products", testId: "nav-products" },
-  { href: "/register", label: "Register", testId: "nav-register" },
   { href: "/cart", label: "Cart", testId: "nav-cart" },
 ];
+
+const LINK_CLASS =
+  "inline-flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors";
+const LINK_ACTIVE_CLASS = "bg-surface-muted text-ink";
+const LINK_IDLE_CLASS = "text-ink-muted hover:bg-surface-muted hover:text-ink";
 
 function ShopMark() {
   return (
@@ -60,10 +65,19 @@ function CartIcon() {
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const { count } = useCart();
+  const { session, logOut } = useSession();
 
   // The badge is only shown when there is something in the cart.
   const showBadge = count > 0;
+
+  const isLoginActive = pathname === "/login";
+
+  function handleLogout() {
+    logOut();
+    router.push("/");
+  }
 
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-surface/90 backdrop-blur-sm">
@@ -90,10 +104,8 @@ export function SiteHeader() {
                     href={link.href}
                     data-testid={link.testId}
                     aria-current={isActive ? "page" : undefined}
-                    className={`inline-flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                      isActive
-                        ? "bg-surface-muted text-ink"
-                        : "text-ink-muted hover:bg-surface-muted hover:text-ink"
+                    className={`${LINK_CLASS} ${
+                      isActive ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
                     }`}
                   >
                     {isCart && <CartIcon />}
@@ -121,6 +133,54 @@ export function SiteHeader() {
                 </li>
               );
             })}
+
+            {/*
+              * A logged in shopper sees their name and a Logout button. The
+              * Login and Register links are only there when nobody is logged
+              * in. They share one list item, so they stay together when the
+              * navigation wraps on a narrow screen.
+              */}
+            {session ? (
+              <li className="flex items-center gap-1 sm:gap-2">
+                <span
+                  data-testid="nav-user-name"
+                  className="block max-w-[10rem] truncate px-3 py-2 text-sm font-semibold text-ink"
+                >
+                  {session.name}
+                </span>
+                <button
+                  type="button"
+                  data-testid="nav-logout"
+                  onClick={handleLogout}
+                  className={`${LINK_CLASS} ${LINK_IDLE_CLASS}`}
+                >
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li className="flex items-center gap-1 sm:gap-2">
+                <Link
+                  href="/login"
+                  data-testid="nav-login"
+                  aria-current={isLoginActive ? "page" : undefined}
+                  className={`${LINK_CLASS} ${
+                    isLoginActive ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
+                  }`}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  data-testid="nav-register"
+                  aria-current={pathname === "/register" ? "page" : undefined}
+                  className={`${LINK_CLASS} ${
+                    pathname === "/register" ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
+                  }`}
+                >
+                  Register
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

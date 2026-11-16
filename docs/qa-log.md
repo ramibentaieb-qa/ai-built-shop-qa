@@ -6,3 +6,4 @@
 | 4 add to cart      |   9       |   0           |   +5             |     Accepted  |
 | 5 cart page        |   15      |   0           |   +5             |     Accepted  |
 | 6 register page    |   9       |   0           |   +7             |     Accepted  |
+| 7 login page       |   10      |   0           |   +6             |     Accepted  |

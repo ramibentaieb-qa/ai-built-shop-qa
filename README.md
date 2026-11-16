@@ -3,8 +3,9 @@
 # MiniMart — AI-Built Online Shop (QA base)
 
 A Next.js skeleton for a small online shop, built for manual QA. This branch delivers
-**Story 7: Registration** on top of the Story 1 shell, the Story 2 product list, the Story 3
-product detail page, the Story 4 cart, the Story 5 cart page and the Story 6 order summary.
+**Story 8: Login and logout** on top of the Story 1 shell, the Story 2 product list, the Story 3
+product detail page, the Story 4 cart, the Story 5 cart page, the Story 6 order summary and the
+Story 7 registration.
 
 ## Requirements
 
@@ -184,6 +185,33 @@ implemented in this story. They arrive in later stories.
 Login, logout, protecting `/payment`, password recovery, email verification and any database
 are **not** implemented in this story. They arrive in later stories.
 
+## What Story 8 adds
+
+- A **Login** link in the header (`data-testid="nav-login"`) that opens `/login`. It shows
+  next to the **Register** link, and both disappear while somebody is logged in.
+- A `/login` page with an **Email** field, a **Password** field and a **Log in** button. Both
+  fields are required; an empty field shows a message under that field.
+- The right email and the right password log the shopper in and send them to the home page. The
+  email is compared without regard to upper or lower case, the password is case-sensitive.
+- A wrong email and a wrong password both show the same message, **"Invalid email or
+  password"**, so it stays hidden which one was wrong. The shopper stays logged out.
+- A logged in shopper sees their full name and a **Logout** button in the header. Logging out
+  ends the session, sends them back to the home page and brings the **Login** and **Register**
+  links back.
+- The session lives in `sessionStorage`. It survives a refresh and a move between pages, and it
+  ends when the tab is closed. The accounts stay in `localStorage`, as in Story 7.
+- When the demo account expires after 24 hours, the session ends on the next page load and the
+  shopper reads **"Your demo account has expired, please register again"**. The message is
+  gone after registering a new account or logging in again.
+- Logging in and logging out do not touch the cart.
+- The page works at 375px and 1440px width, and every control can be used with the keyboard
+  only.
+
+### Deliberately out of scope for Story 8
+
+Protecting `/payment`, password recovery, "remember me", email verification and any database
+are **not** implemented in this story. They arrive in later stories.
+
 ## Project structure
 
 ```
@@ -209,6 +237,9 @@ src/
     order-summary.tsx   # Subtotal, delivery fee, total and the checkout link
     account-cleanup.tsx # Deletes demo accounts older than 24 hours, on every page load
     register-form.tsx   # The registration form: fields, error messages, success message
+    session-provider.tsx # Shares the session between the header, the login form and the notice
+    session-expired-notice.tsx # The message about an expired demo account
+    login-form.tsx      # The login form: fields, error messages, wrong credentials message
   data/
     products.json       # The 12 products
   lib/
@@ -218,6 +249,8 @@ src/
     cart-store.ts       # Keeps the cart in the browser storage
     accounts.ts         # Account rules: email format, password length, the 24 hour lifetime
     account-store.ts    # Keeps the demo accounts in the browser storage
+    session.ts          # Session rules: what a session holds and the expired message
+    session-store.ts    # Keeps the session in the browser session storage
 public/
   products/             # Product artwork (SVG)
 ```
@@ -286,4 +319,27 @@ public/
 - An account is deleted 24 hours after it was created, and the deletion happens when any page
   loads. To test it, save an account with a `createdAt` that is more than 24 hours old and load
   a page: the account is gone and its email can be registered again.
-- The branch for this work is `feature/registration`; `main` is left untouched.
+- Locators for the login: `nav-login` (the Login link in the header), `login-email`,
+  `login-password`, `login-submit`, `login-error-email`, `login-error-password` and
+  `login-error`.
+- The element behind each login locator: the two fields are `input`s, the button is a
+  `button`, the two field messages are `p`s and the message about wrong credentials is a `p`.
+- The ids of the login messages are `login-email-error` and `login-password-error`, the same
+  pattern as `register-email-error` on the registration page. The message about wrong
+  credentials has the id `login-error`.
+- The `h1` of the login page is "Log in" and the button says "Log in".
+- The field messages are "Email is required" and "Password is required". The message for a
+  wrong email or a wrong password is "Invalid email or password" and it shows in
+  `login-error`, not in the field messages.
+- The field messages only show while they are needed. They are not in the DOM when the field
+  is fine.
+- Locators for the session in the header: `nav-user-name` (the full name of the shopper) and
+  `nav-logout` (the Logout button). The name is a `span` and the button is a `button`.
+- The message about an expired account has the locator `session-expired-message` and says
+  "Your demo account has expired, please register again". It is a `p` that sits below the
+  header on every page, and it is only there after the account expired.
+- The session lives in the browser under the `ai-built-shop-qa:session:v1` key of
+  `sessionStorage`, and it is stored as `{ email, name, createdAt }`. The message about the
+  expired account uses the `ai-built-shop-qa:session-expired:v1` key of the same storage. Clear
+  both to start without a session.
+- The branch for this work is `feature/login`; `main` is left untouched.

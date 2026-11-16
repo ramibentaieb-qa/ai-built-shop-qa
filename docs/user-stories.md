@@ -149,3 +149,27 @@ Discounts and coupons, real payment, a checkout form, login, and any database.
 
 ### Out of scope
 Login, logout, protecting `/payment`, password recovery, email verification, and any database.
+
+## Story 8: Login and Logout
+
+**As a** registered shopper,
+**I want** to log in and out of my demo account,
+**so that** I can later continue to payment as a known user.
+
+### Acceptance Criteria
+1. The header shows "Login" and "Register" links when nobody is logged in. "Login" opens `/login`.
+2. The login form has an email field, a password field and a "Log in" button. Both fields are required, and an empty field shows an error for that field.
+3. A correct email and password logs the shopper in and redirects to the Home page. The email is compared without regard to upper or lower case, and the password is case-sensitive.
+4. A wrong email or a wrong password shows the same error, "Invalid email or password", and the shopper stays logged out.
+5. When logged in, the header shows the shopper's full name and a "Logout" button, and the "Login" and "Register" links are hidden.
+6. Clicking "Logout" ends the session, returns to the Home page, and shows the "Login" and "Register" links again.
+7. The session survives a page refresh and navigation between pages, but not a closed browser (it ends when the browser is closed).
+8. When the account expires (24 hours after its creation, as in Story 7), the shopper is logged out on the next page load and sees the message "Your demo account has expired, please register again".
+9. The cart is not changed by logging in or out.
+10. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+
+### Locators
+`nav-login`, `login-email`, `login-password`, `login-submit`, `login-error-email`, `login-error-password`, `login-error`, `nav-user-name`, `nav-logout`, `session-expired-message`.
+
+### Out of scope
+Protecting `/payment` (next story), password recovery, "remember me", email verification, and any database.

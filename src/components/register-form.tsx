@@ -2,6 +2,7 @@
 
 import { useRef, useState, type FormEvent, type RefObject } from "react";
 
+import { useSession } from "@/components/session-provider";
 import { MIN_PASSWORD_LENGTH, findAccountByEmail, isValidEmail } from "@/lib/accounts";
 import { addAccount, getAccounts } from "@/lib/account-store";
 
@@ -115,6 +116,8 @@ function validate(values: Record<FieldName, string>): FieldErrors {
  * is no server and no database, and the shopper is not logged in afterwards.
  */
 export function RegisterForm() {
+  const { dismissExpiredNotice } = useSession();
+
   const [values, setValues] = useState<Record<FieldName, string>>(EMPTY_FORM);
   const [errors, setErrors] = useState<FieldErrors>({});
   const [created, setCreated] = useState(false);
@@ -175,6 +178,9 @@ export function RegisterForm() {
     setValues({ ...EMPTY_FORM });
     setErrors({});
     setCreated(true);
+
+    // A new account means the message about the expired one is not needed.
+    dismissExpiredNotice();
   }
 
   return (
