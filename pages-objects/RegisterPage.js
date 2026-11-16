@@ -6,10 +6,6 @@ class RegisterPage extends BasePage {
         this.heading = page.getByRole('heading', {level: 1});
     }
 
-    // async getRegisterHeading() {
-    //     return await this.getText('div h1');
-    // }
-
     async clickCreateAccountButton() {
         await this.click('button[data-testid="register-submit"]');
     }

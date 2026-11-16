@@ -56,6 +56,14 @@ test.describe('Testing Register Page', () => {
     })
 
 
+    /** see Story 9 */
+    test.fixme('Register nav button should disappear after a successful register', async({page}) => {
+        // await expect(page.getByTestId('nav-register')).toBeVisible();
+        // await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
+        // await expect(page.getByTestId('nav-register')).not.toBeVisible();
+    })
+
+
     test('Attempt to Register with an already saved email', async ({page}) => {
 
         /**save a new user */
@@ -100,7 +108,7 @@ test.describe('Account expiry afer 24 hours', () => {
     })
 
     test('Account is kept before 24 hours', async ({page}) => {
-        /** I'm fastwording the time to 23h 59m */
+        /** I'm fast forwarding the time to 23h 59m */
         await page.clock.fastForward(23 * HOUR + 59 * 60 * 1000);
         await page.reload();
 
@@ -108,8 +116,8 @@ test.describe('Account expiry afer 24 hours', () => {
         await expect(page.getByTestId('register-error-email')).toHaveText('This email is already registered');
     });
 
-    test('Account is  deleted after 24 hours and the email can be reused', async ({page}) => {
-        /** I'm fastwording the time to 24h 01m */
+    test('Account is deleted after 24 hours and the email can be reused', async ({page}) => {
+        /** I'm fast forwarding the time to 24h 01m */
         await page.clock.fastForward(24 * HOUR + 60 * 1000);
         await page.reload();
 
