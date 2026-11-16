@@ -324,6 +324,9 @@ public/
   `login-error`.
 - The element behind each login locator: the two fields are `input`s, the button is a
   `button`, the two field messages are `p`s and the message about wrong credentials is a `p`.
+- The ids of the login messages are `login-email-error` and `login-password-error`, the same
+  pattern as `register-email-error` on the registration page. The message about wrong
+  credentials has the id `login-error`.
 - The `h1` of the login page is "Log in" and the button says "Log in".
 - The field messages are "Email is required" and "Password is required". The message for a
   wrong email or a wrong password is "Invalid email or password" and it shows in
