@@ -126,3 +126,26 @@ Subtotal, discount, delivery fee and order total (next story), the checkout and 
 
 ### Out of scope
 Discounts and coupons, real payment, a checkout form, login, and any database.
+
+## Story 7: Registration
+
+**As a** new shopper,
+**I want** to create a demo account,
+**so that** I can log in later and continue to payment.
+
+### Acceptance Criteria
+1. The header has a "Register" link that opens `/register`.
+2. The form has these fields: full name, email, password and confirm password, plus a "Create account" button. A notice on the page says: "Demo accounts are stored in this browser and deleted after 24 hours. Do not use a real password."
+3. Every field is required. Leaving one empty shows an error for that field, and no account is created.
+4. The email must have a valid format (for example `name@example.com`). Otherwise, an error is shown.
+5. The password must have at least 8 characters, and the confirm password must match it. Otherwise, an error is shown.
+6. An email that is already registered (compared without regard to upper or lower case) shows the error "This email is already registered", and no second account is created.
+7. A valid form creates the account, shows "Account created", and clears the form. The shopper is not logged in yet, and the cart is not changed.
+8. Each account is saved in the browser with its creation time. Accounts older than 24 hours are deleted when any page loads, and their email can be registered again.
+9. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+
+### Locators
+`nav-register`, `register-name`, `register-email`, `register-password`, `register-confirm-password`, `register-submit`, `register-error-name`, `register-error-email`, `register-error-password`, `register-error-confirm`, `register-success`.
+
+### Out of scope
+Login, logout, protecting `/payment`, password recovery, email verification, and any database.

@@ -21,6 +21,10 @@ class HomePage extends BasePage{
         await this.click('a[data-testid="nav-products"]');
     }
 
+    async clickRegisterLink() {
+        await this.click('a[data-testid="nav-register"]');
+    }
+
 
 
 

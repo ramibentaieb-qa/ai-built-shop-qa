@@ -20,6 +20,7 @@
   --danger: #dc2626;
   --danger-contrast: #ffffff;
   --danger-ink: #dc2626;
+  --success: #15803d;
   --focus: #1d4ed8;
 }
 
@@ -35,6 +36,7 @@
     --brand-strong: #fdba74;
     --brand-contrast: #1c1917;
     --danger-ink: #f87171;
+    --success: #4ade80;
     --focus: #93c5fd;
   }
 }
@@ -52,6 +54,7 @@
   --color-danger: var(--danger);
   --color-danger-contrast: var(--danger-contrast);
   --color-danger-ink: var(--danger-ink);
+  --color-success: var(--success);
   --color-focus: var(--focus);
   --font-sans: var(--font-body);
   --font-display: var(--font-heading);

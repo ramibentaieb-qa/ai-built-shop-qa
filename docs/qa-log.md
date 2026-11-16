@@ -5,3 +5,4 @@
 | 3 Product details  |   7       |   0           |   +3             |     Accepted  |
 | 4 add to cart      |   9       |   0           |   +5             |     Accepted  |
 | 5 cart page        |   15      |   0           |   +5             |     Accepted  |
+| 6 register page    |   9       |   0           |   +7             |     Accepted  |
