@@ -137,56 +137,49 @@ export function SiteHeader() {
             {/*
               * A logged in shopper sees their name and a Logout button. The
               * Login and Register links are only there when nobody is logged
-              * in.
+              * in. They share one list item, so they stay together when the
+              * navigation wraps on a narrow screen.
               */}
             {session ? (
-              <>
-                <li className="flex items-center">
-                  <span
-                    data-testid="nav-user-name"
-                    className="block max-w-[10rem] truncate px-3 py-2 text-sm font-semibold text-ink"
-                  >
-                    {session.name}
-                  </span>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    data-testid="nav-logout"
-                    onClick={handleLogout}
-                    className={`${LINK_CLASS} ${LINK_IDLE_CLASS}`}
-                  >
-                    Logout
-                  </button>
-                </li>
-              </>
+              <li className="flex items-center gap-1 sm:gap-2">
+                <span
+                  data-testid="nav-user-name"
+                  className="block max-w-[10rem] truncate px-3 py-2 text-sm font-semibold text-ink"
+                >
+                  {session.name}
+                </span>
+                <button
+                  type="button"
+                  data-testid="nav-logout"
+                  onClick={handleLogout}
+                  className={`${LINK_CLASS} ${LINK_IDLE_CLASS}`}
+                >
+                  Logout
+                </button>
+              </li>
             ) : (
-              <>
-                <li>
-                  <Link
-                    href="/login"
-                    data-testid="nav-login"
-                    aria-current={isLoginActive ? "page" : undefined}
-                    className={`${LINK_CLASS} ${
-                      isLoginActive ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
-                    }`}
-                  >
-                    Login
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/register"
-                    data-testid="nav-register"
-                    aria-current={pathname === "/register" ? "page" : undefined}
-                    className={`${LINK_CLASS} ${
-                      pathname === "/register" ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
-                    }`}
-                  >
-                    Register
-                  </Link>
-                </li>
-              </>
+              <li className="flex items-center gap-1 sm:gap-2">
+                <Link
+                  href="/login"
+                  data-testid="nav-login"
+                  aria-current={isLoginActive ? "page" : undefined}
+                  className={`${LINK_CLASS} ${
+                    isLoginActive ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
+                  }`}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/register"
+                  data-testid="nav-register"
+                  aria-current={pathname === "/register" ? "page" : undefined}
+                  className={`${LINK_CLASS} ${
+                    pathname === "/register" ? LINK_ACTIVE_CLASS : LINK_IDLE_CLASS
+                  }`}
+                >
+                  Register
+                </Link>
+              </li>
             )}
           </ul>
         </nav>
