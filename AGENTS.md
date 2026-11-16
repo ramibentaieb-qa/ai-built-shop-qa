@@ -8,6 +8,7 @@
 - Do not edit or delete anything in tests/ or pages-objects/. Those belong to the QA lead.
 - If you add your own unit tests, put them in a separate folder (for example src/__tests__/).
 - Report which checks you ran, but do not claim a story is accepted. The QA lead decides that.
+- Do not rewrite README.md. When a story is finished, only update the status row for that story in the “What is built” table, and add any new commands. Do not add per-story sections.
 
 ## Locator naming
 `nav-products`, `nav-cart`, `cart-badge`, `product-list`, `product-card-{id}`, `product-name-{id}`, `product-price-{id}`, `product-title`, `product-price`, `size-option-{S|M|L|XL}`, `quantity-increase`, `quantity-decrease`, `quantity-value`, `add-to-cart`, `size-error`.
