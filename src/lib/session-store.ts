@@ -140,7 +140,9 @@ export function startSession(session: Session): void {
 
 /** Ends the session and logs the shopper out. */
 export function endSession(): void {
-  writeState({ session: null, expired: getSessionState().expired });
+  const state = getSessionState();
+
+  writeState({ session: null, expired: state.expired });
 }
 
 /** Hides the message about the expired account, for example after registering. */
