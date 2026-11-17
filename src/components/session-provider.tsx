@@ -32,6 +32,8 @@ if (typeof window !== "undefined") {
 }
 
 type SessionContextValue = SessionState & {
+  /** False until the session stored in the browser has been read. */
+  ready: boolean;
   /** Logs the shopper in. */
   logIn: (session: Session) => void;
   /** Ends the session and logs the shopper out. */
@@ -55,6 +57,14 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     getServerSessionState,
   );
 
+  // The server has no browser storage, so the session is only known after
+  // hydration.
+  const ready = useSyncExternalStore(
+    subscribeToSession,
+    () => true,
+    () => false,
+  );
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -71,11 +81,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const value = useMemo<SessionContextValue>(
     () => ({
       ...state,
+      ready,
       logIn: startSession,
       logOut: endSession,
       dismissExpiredNotice: clearExpiredNotice,
     }),
-    [state],
+    [state, ready],
   );
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
