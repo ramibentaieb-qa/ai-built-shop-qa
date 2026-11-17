@@ -29,6 +29,10 @@ class HomePage extends BasePage{
         await this.click('a[data-testid="nav-login"]')
     }
 
+    async clickLogoutLink() {
+        await this.click('button[data-testid="nav-logout"]');
+    }
+
 
 
 

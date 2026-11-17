@@ -22,15 +22,15 @@ test.describe('Testing Login Page', () => {
         await homePage.clickRegisterLink();
 
         await registerPage.fillAndSubmit('jon doe', 'jondoe@email.com', 'jondoe123');
-
-        await homePage.clickLoginLink();
+        await homePage.clickLogoutLink();
     })
 
     test('Successful login with valid credentials', async ({page}) => {
         
-        await expect(page.getByTestId('nav-user-name')).not.toBeVisible();
-        await expect(page.getByTestId('nav-logout')).not.toBeVisible();
-        
+        await expect(page.getByTestId('nav-user-name')).toBeHidden();
+        await expect(page.getByTestId('nav-logout')).toBeHidden();
+
+        await homePage.clickLoginLink();
         await loginPage.loginFillAndSubmit('jondoe@email.com', 'jondoe123');
 
         await expect(page).toHaveURL(/\//);
@@ -39,13 +39,15 @@ test.describe('Testing Login Page', () => {
 
 
         /** Testing Logout button */
-        await loginPage.clickLogoutButton();
+        await homePage.clickLogoutLink();
         await expect(page.getByTestId('nav-login')).toBeVisible();
         await expect(page.getByTestId('nav-register')).toBeVisible();
     })
 
 
     test('Login Page Loads with required fields', async ({page}) => {
+
+        await homePage.clickLoginLink();
 
         await expect(page).toHaveURL(/\/login/);
         await expect(loginPage.heading).toHaveText('Log in');
@@ -60,6 +62,8 @@ test.describe('Testing Login Page', () => {
 
     test('Failed login with invalid credentials', async ({page}) => {
 
+        await homePage.clickLoginLink();
+
         await loginPage.loginFillAndSubmit('wrongmail@email.com', 'jondoe123')
         await expect(page.locator('#login-error')).toHaveText('Invalid email or password');
 
@@ -68,7 +72,9 @@ test.describe('Testing Login Page', () => {
     })
 
 
-    test('Session survives after a paage refresh but not after a closed browser', async ({page, context}) => {
+    test('Session survives after a page refresh but not after a closed browser', async ({page, context}) => {
+
+        await homePage.clickLoginLink()
 
         await loginPage.loginFillAndSubmit('jondoe@email.com', 'jondoe123');
 
@@ -104,6 +110,8 @@ test.describe('Session expiry afer 24 hours', () => {
         await homePage.clickRegisterLink();
 
         await registerPage.fillAndSubmit('jon doe', 'jondoe@email.com', 'jondoe123');
+
+        await homePage.clickLogoutLink();
 
         await homePage.clickLoginLink();
         await loginPage.loginFillAndSubmit('jondoe@email.com', 'jondoe123');
