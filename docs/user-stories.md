@@ -173,3 +173,27 @@ Login, logout, protecting `/payment`, password recovery, email verification, and
 
 ### Out of scope
 Protecting `/payment` (next story), password recovery, "remember me", email verification, and any database.
+
+## Story 9: Automatic Login After Registration
+
+**As a** new shopper,
+**I want** to be logged in as soon as I register,
+**so that** I do not have to log in again right after creating my account.
+
+### Acceptance Criteria
+1. A valid registration creates the account (as in Story 7), logs the shopper in, and redirects to the Home page.
+2. After the redirect, the header shows the shopper's full name and the "Logout" button. The "Login" and "Register" links are hidden.
+3. The Home page shows the message "Welcome, {full name}! Your account was created." (`welcome-message`).
+4. A failed registration (any validation error, or a duplicate email) does not log the shopper in and stays on `/register`.
+5. A logged-in shopper who opens `/register` or `/login` is redirected to the Home page.
+6. The session rules from Story 8 apply: it survives a refresh and ends when the browser closes. The 24-hour account expiry also applies.
+7. The cart is not changed by registering.
+
+### Locators
+`welcome-message` (new), plus the existing `nav-user-name` and `nav-logout`.
+
+### Changes to earlier stories
+Story 7, criterion 7 is replaced by this story. "The shopper is not logged in yet" no longer applies, and the form no longer stays on screen after success.
+
+### Out of scope
+Email verification, "remember me", password recovery, and any database.

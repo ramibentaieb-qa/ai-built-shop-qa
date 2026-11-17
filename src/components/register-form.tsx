@@ -1,10 +1,12 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent, type RefObject } from "react";
 
 import { useSession } from "@/components/session-provider";
 import { MIN_PASSWORD_LENGTH, findAccountByEmail, isValidEmail } from "@/lib/accounts";
 import { addAccount, getAccounts } from "@/lib/account-store";
+import { rememberWelcome } from "@/lib/session-store";
 
 type FieldName = "name" | "email" | "password" | "confirm";
 
@@ -116,11 +118,11 @@ function validate(values: Record<FieldName, string>): FieldErrors {
  * is no server and no database, and the shopper is not logged in afterwards.
  */
 export function RegisterForm() {
-  const { dismissExpiredNotice } = useSession();
+  const router = useRouter();
+  const { logIn, dismissExpiredNotice } = useSession();
 
   const [values, setValues] = useState<Record<FieldName, string>>(EMPTY_FORM);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [created, setCreated] = useState(false);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -149,7 +151,6 @@ export function RegisterForm() {
     const nextErrors = validate(values);
 
     setErrors(nextErrors);
-    setCreated(false);
 
     const firstInvalid = FIELD_ORDER.find((field) => nextErrors[field]);
 
@@ -166,21 +167,31 @@ export function RegisterForm() {
       return;
     }
 
-    addAccount({
+    const account = {
       name: values.name.trim(),
       email: values.email.trim(),
       password: values.password,
       createdAt: Date.now(),
+    };
+
+    addAccount(account);
+
+    // The shopper is logged in right away, so the shopper does not have to log
+    // in again. The cart is not touched.
+    logIn({
+      email: account.email,
+      name: account.name,
+      createdAt: account.createdAt,
     });
 
-    // The form starts empty again. The shopper is not logged in and the cart is
-    // not touched.
-    setValues({ ...EMPTY_FORM });
-    setErrors({});
-    setCreated(true);
+    // The home page welcomes the new shopper.
+    rememberWelcome(account.name);
 
     // A new account means the message about the expired one is not needed.
     dismissExpiredNotice();
+
+    // The form does not stay on screen after success.
+    router.push("/");
   }
 
   return (
@@ -249,16 +260,6 @@ export function RegisterForm() {
       >
         Create account
       </button>
-
-      {created && (
-        <p
-          data-testid="register-success"
-          role="status"
-          className="mt-4 text-sm font-semibold text-success"
-        >
-          Account created
-        </p>
-      )}
     </form>
   );
 }

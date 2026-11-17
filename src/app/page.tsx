@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { WelcomeMessage } from "@/components/welcome-message";
 import { SHOP_NAME, SHOP_TAGLINE } from "@/lib/shop";
 
 const READY_ITEMS = [
@@ -23,6 +24,8 @@ const READY_ITEMS = [
 export default function HomePage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 sm:py-16">
+      <WelcomeMessage />
+
       <section className="rounded-2xl border border-line bg-surface p-6 shadow-sm sm:p-10">
         <p className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-brand">
           Online shop

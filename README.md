@@ -30,7 +30,7 @@ It's a mock shop. There are no real payments, no real customer data and no datab
 | 6 | Order summary and checkout link | Done |
 | 7 | Registration with demo accounts that expire after 24 hours | Done |
 | 8 | Login and logout | Done |
-| 9 | Automatic login after registration | Planned |
+| 9 | Automatic login after registration | Done |
 | 10 | Checkout gate: `/payment` requires login | Planned |
 | 11 | Payment form and order confirmation | Planned |
 

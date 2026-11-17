@@ -24,9 +24,5 @@ class LoginPage extends BasePage {
         await this.clickLoginButton();
     }
 
-    async clickLogoutButton() {
-        await this.click('button[data-testid="nav-logout"]');
-    }
-
 }
 module.exports = LoginPage;

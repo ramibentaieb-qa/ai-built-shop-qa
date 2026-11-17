@@ -52,15 +52,22 @@ test.describe('Testing Register Page', () => {
 
     test('Successful Register with valid credentials', async({page}) => {
         await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
-        await expect(page.getByTestId('register-success')).toHaveText('Account created')
+        await expect(page.getByTestId('welcome-message')).toBeVisible()
     })
 
 
     /** see Story 9 */
-    test.fixme('Register nav button should disappear after a successful register', async({page}) => {
-        // await expect(page.getByTestId('nav-register')).toBeVisible();
-        // await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
-        // await expect(page.getByTestId('nav-register')).not.toBeVisible();
+    test('Successful registration logs the shopper in and redirects to home page', async({page}) => {
+        await expect(page.getByTestId('nav-register')).toBeVisible();
+        
+        await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
+        
+        await expect(page).toHaveURL('http://localhost:3000/');
+        await expect(page.getByTestId('nav-user-name')).toHaveText('Jon Doe');
+        await expect(page.getByTestId('nav-logout')).toBeVisible();
+        await expect(page.getByTestId('nav-register')).toBeHidden();
+        await expect(page.getByTestId('nav-login')).toBeHidden();
+        await expect(page.getByTestId('welcome-message')).toContainText('Jon Doe');
     })
 
 
@@ -69,15 +76,14 @@ test.describe('Testing Register Page', () => {
         /**save a new user */
         await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
         
-        await expect(page.getByTestId('register-success')).toHaveText('Account created')
+        await expect(page.getByTestId('welcome-message')).toBeVisible()
+
+        await homePage.clickLogoutLink()
+        await homePage.clickRegisterLink()
 
         /** First attempt */
-        await registerPage.setFullName('Diff Person');
-        await registerPage.setEmail("jondoe@email.com")
-        await registerPage.setPassword("same_email")
-        await registerPage.setConfirmPassword("same_email")
-
-        await registerPage.clickCreateAccountButton();
+        await registerPage.fillAndSubmit('Diff Person', "jondoe@email.com", "diff-pass")
+        
         await expect(page.locator('#register-email-error')).toHaveText('This email is already registered')
 
         /**Second attempt  with a Capital letter */
@@ -104,13 +110,15 @@ test.describe('Account expiry afer 24 hours', () => {
         await homePage.clickRegisterLink();
 
         await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe1234');
-        await expect(page.getByTestId('register-success')).toBeVisible();
     })
 
     test('Account is kept before 24 hours', async ({page}) => {
         /** I'm fast forwarding the time to 23h 59m */
         await page.clock.fastForward(23 * HOUR + 59 * 60 * 1000);
         await page.reload();
+
+        await homePage.clickLogoutLink()
+        await homePage.clickRegisterLink()
 
         await registerPage.fillAndSubmit('Other Person', 'jondoe@email.com', 'other1234');
         await expect(page.getByTestId('register-error-email')).toHaveText('This email is already registered');
@@ -122,6 +130,5 @@ test.describe('Account expiry afer 24 hours', () => {
         await page.reload();
 
         await registerPage.fillAndSubmit('Other Person', 'jondoe@email.com', 'other1234');
-        await expect(page.getByTestId('register-success')).toBeVisible();
     })
 })

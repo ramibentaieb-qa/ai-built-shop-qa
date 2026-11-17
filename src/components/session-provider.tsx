@@ -13,6 +13,7 @@ import {
 import {
   checkSession,
   clearExpiredNotice,
+  clearWelcome,
   endSession,
   getServerSessionState,
   getSessionState,
@@ -59,6 +60,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     // An account can expire while the shopper is moving between pages.
     checkSession();
+
+    // The welcome message belongs to the home page, so it is forgotten when
+    // the shopper moves to another page.
+    if (pathname !== "/") {
+      clearWelcome();
+    }
   }, [pathname]);
 
   const value = useMemo<SessionContextValue>(
