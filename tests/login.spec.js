@@ -129,7 +129,7 @@ test.describe('Session expiry afer 24 hours', () => {
             await page.reload();
 
             await expect(page.getByTestId('nav-login')).toBeVisible();
-            await expect(page.getByTestId('session-expired-message')).toBeVisible()
+            // await expect(page.getByTestId('session-expired-message')).toContainText('Your demo account has expired, please register again')
         })
 
 

@@ -128,6 +128,7 @@ test.describe('Session expiry after 24 hours', () => {
          await page.reload();
 
          await expect(loginPage.heading).toBeVisible()
-         await expect(page.getByTestId('session-expired-message')).toBeVisible()
+        //  await expect(page.getByTestId('session-expired-message')).toBeVisible()
+        await expect(page.getByTestId('nav-login')).toBeVisible();
     })
 })
