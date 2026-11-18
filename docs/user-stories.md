@@ -220,3 +220,30 @@ Email verification, "remember me", password recovery, and any database.
 
 ### Out of scope
 The payment form, order confirmation, password recovery, and any database. A shopper who registers from the login page lands on the Home page (Story 9), not on `/payment`.
+
+
+## Story 11: Notifications (toasts)
+
+**As a** shopper,
+**I want** short messages to appear briefly and then go away,
+**so that** I get the information without it taking up space on the page.
+
+### Acceptance Criteria
+1. These three messages appear as a notification at the bottom of the page, not inside the page content: the welcome message after registration, the "Please log in to continue to payment" message, and the "Your demo account has expired, please register again" message.
+2. A notification disappears by itself after 5 seconds.
+3. A notification has a close button that dismisses it immediately.
+4. A notification does not disappear while the pointer is over it or while it has keyboard focus.
+5. A notification triggered before a redirect is shown on the page the shopper lands on (for example, the welcome message on Home after registering).
+6. A notification is not shown again after a page refresh.
+7. Only one notification is shown at a time. A new one replaces the current one.
+8. Notifications are announced by screen readers (`role="status"`).
+9. The notification displays correctly at 375px and 1440px width, and does not cover the header.
+
+### Locators
+`toast` (the container), `toast-close` (the close button). The existing `welcome-message`, `login-required-message` and `session-expired-message` stay on the text element inside the toast.
+
+### Changes to earlier stories
+Story 9 criterion 3, Story 8 criterion 8 and Story 10 criteria 2 and 7 now show their messages as notifications, with the same text.
+
+### Out of scope
+Inline form errors (`size-error`, login and register field errors), sounds, animations, and any database.

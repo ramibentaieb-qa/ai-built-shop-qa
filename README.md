@@ -32,7 +32,8 @@ It's a mock shop. There are no real payments, no real customer data and no datab
 | 8 | Login and logout | Done |
 | 9 | Automatic login after registration | Done |
 | 10 | Checkout gate: `/payment` requires login | Done |
-| 11 | Payment form and order confirmation | Planned |
+| 11 | Notifications (toasts) | Done |
+| 12 | Payment form and order confirmation | Planned |
 
 The full acceptance criteria are in [`docs/user-stories.md`](docs/user-stories.md).
 

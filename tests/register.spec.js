@@ -110,6 +110,7 @@ test.describe('Account expiry afer 24 hours', () => {
         await homePage.clickRegisterLink();
 
         await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe1234');
+        await expect(page.getByTestId('nav-user-name')).toBeVisible();
     })
 
     test('Account is kept before 24 hours', async ({page}) => {
@@ -129,6 +130,11 @@ test.describe('Account expiry afer 24 hours', () => {
         await page.clock.fastForward(24 * HOUR + 60 * 1000);
         await page.reload();
 
+        await expect(page.getByTestId('nav-login')).toBeVisible();
+
+        await homePage.clickRegisterLink();
         await registerPage.fillAndSubmit('Other Person', 'jondoe@email.com', 'other1234');
+
+        await expect(page.getByTestId('nav-user-name')).toContainText('Other Person')
     })
 })

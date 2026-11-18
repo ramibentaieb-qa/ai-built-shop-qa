@@ -20,9 +20,6 @@ export const SESSION_STORAGE_KEY = "ai-built-shop-qa:session:v1";
 /** Remembers that the account of the shopper expired. */
 export const SESSION_EXPIRED_KEY = "ai-built-shop-qa:session-expired:v1";
 
-/** Keeps the name of the shopper who just registered, for the welcome message. */
-export const SESSION_WELCOME_KEY = "ai-built-shop-qa:session-welcome:v1";
-
 /** What the shopper reads when the demo account expired. */
 export const SESSION_EXPIRED_MESSAGE =
   "Your demo account has expired, please register again";
