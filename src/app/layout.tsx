@@ -3,10 +3,10 @@ import { DM_Sans, Space_Grotesk } from "next/font/google";
 
 import { AccountCleanup } from "@/components/account-cleanup";
 import { CartProvider } from "@/components/cart-provider";
-import { SessionExpiredNotice } from "@/components/session-expired-notice";
 import { SessionProvider } from "@/components/session-provider";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { ToastHost } from "@/components/toast-host";
 import { SHOP_DESCRIPTION, SHOP_NAME } from "@/lib/shop";
 
 import "./globals.css";
@@ -52,11 +52,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SessionProvider>
           <CartProvider>
             <SiteHeader />
-            <SessionExpiredNotice />
             <main id="main-content" tabIndex={-1} className="flex-1">
               {children}
             </main>
             <SiteFooter />
+            <ToastHost />
           </CartProvider>
         </SessionProvider>
       </body>
