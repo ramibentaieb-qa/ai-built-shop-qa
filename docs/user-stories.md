@@ -247,3 +247,28 @@ Story 9 criterion 3, Story 8 criterion 8 and Story 10 criteria 2 and 7 now show 
 
 ### Out of scope
 Inline form errors (`size-error`, login and register field errors), sounds, animations, and any database.
+
+## Story 12: Payment Form
+
+**As a** logged-in shopper,
+**I want** to enter my delivery and card details,
+**so that** I can place my order.
+
+### Acceptance Criteria
+1. `/payment` shows the order total (`checkout-total`, same amount as on the cart page) and a form with these fields: full name, email, phone, address, city, card number, expiry date (MM/YY), and CVC, plus a "Place order" button (`place-order`). The Story 10 rules still apply (login required, empty cart goes to `/cart`).
+2. Full name and email are filled in from the logged-in account, and can be changed.
+3. Every field is required. An empty field shows an error for that field, and no order is placed.
+4. The email must have a valid format. The phone number must have 8 to 15 digits (spaces and a leading `+` are allowed). Name, address and city must have at most 100 characters.
+5. The card number must have exactly 16 digits (spaces between groups are allowed). The CVC must have exactly 3 digits.
+6. The expiry date must be in the format MM/YY, with a month from 01 to 12, and must not be in the past. The current month is still valid.
+7. Every error message disappears as soon as its field is corrected.
+8. When all fields are valid, clicking "Place order" opens `/order-confirmation`, which for now shows only the heading "Order placed".
+9. The card number, expiry date and CVC are never saved in the browser, and the form is empty of card data after a page refresh.
+10. The page shows the notice "Mock payment: do not enter a real card number."
+11. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+
+### Locators
+`checkout-total`, `checkout-name`, `checkout-email`, `checkout-phone`, `checkout-address`, `checkout-city`, `checkout-card-number`, `checkout-expiry`, `checkout-cvc`, `place-order`, and one error per field: `checkout-error-name`, `checkout-error-email`, `checkout-error-phone`, `checkout-error-address`, `checkout-error-city`, `checkout-error-card-number`, `checkout-error-expiry`, `checkout-error-cvc`.
+
+### Out of scope
+The content of the confirmation page, emptying the cart, order history, real payment, and any database.
