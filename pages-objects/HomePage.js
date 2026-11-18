@@ -9,6 +9,10 @@ class HomePage extends BasePage{
         await this.navigate('http://localhost:3000');
     }
 
+    async openPaymenPage() {
+        await this.navigate('http://localhost:3000/payment')
+    }
+
     async getTitleText() {
         return await this.getText('h1')
     }
