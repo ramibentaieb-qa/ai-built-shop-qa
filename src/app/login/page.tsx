@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 
 import { AuthRedirect } from "@/components/auth-redirect";
 import { LoginForm } from "@/components/login-form";
+import { LoginRequiredToast } from "@/components/login-required-toast";
 import { readReturnPathFromParams } from "@/lib/login-return";
 
 export const metadata: Metadata = {
   title: "Login",
   description: "Log in to your MiniMart demo account.",
 };
-
-/** What the shopper reads when the checkout gate sends them here. */
-const LOGIN_REQUIRED_MESSAGE = "Please log in to continue to payment";
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
@@ -24,15 +22,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         Log in
       </h1>
 
-      {returnPath && (
-        <p
-          data-testid="login-required-message"
-          role="status"
-          className="mt-4 rounded-xl border border-line bg-surface-muted p-4 text-sm leading-6 text-ink-muted"
-        >
-          {LOGIN_REQUIRED_MESSAGE}
-        </p>
-      )}
+      <LoginRequiredToast returnPath={returnPath} />
 
       <div className="mt-8">
         <LoginForm returnPath={returnPath} />
