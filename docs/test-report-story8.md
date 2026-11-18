@@ -7,6 +7,6 @@
 | AC #5     |  ok     |           |
 | AC #6     |  ok     |           |
 | AC #7     |  ok     |           |
-| AC #8     |  ok     |           |
+| AC #8     |  ok     |  changed on Story 11         |
 | AC #9     |  ok     |           |
 | AC #10     | ok     |           |
