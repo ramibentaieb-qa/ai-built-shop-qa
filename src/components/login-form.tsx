@@ -104,7 +104,7 @@ function validate(values: Record<FieldName, string>): FieldErrors {
  * the password is compared as it is. A wrong email and a wrong password give
  * the same message, so it stays hidden which one was wrong.
  */
-export function LoginForm() {
+export function LoginForm({ returnPath }: { returnPath?: string | null }) {
   const router = useRouter();
   const { logIn } = useSession();
 
@@ -159,8 +159,9 @@ export function LoginForm() {
       createdAt: account.createdAt,
     });
 
-    // The shopper lands on the home page, logged in.
-    router.push("/");
+    // The shopper goes back to the page the checkout gate sent them from, or
+    // to the home page after a normal login.
+    router.push(returnPath ?? "/");
   }
 
   return (

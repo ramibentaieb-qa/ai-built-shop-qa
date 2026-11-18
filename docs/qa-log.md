@@ -8,3 +8,4 @@
 | 7 register page                                   |   9       |   0           |   +7             |     Accepted  |
 | 8 login page                                      |   10      |   0           |   +6             |     Accepted  |
 | 9 Automatic Login After Registration              |   7       |   0           |   +1             |     Accepted  |
+| 9 Automatic Checkout Gate                         |   8       |   0           |   +5             |     Accepted  |

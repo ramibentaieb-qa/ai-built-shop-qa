@@ -117,7 +117,7 @@ test.describe('Session expiry afer 24 hours', () => {
         await loginPage.loginFillAndSubmit('jondoe@email.com', 'jondoe123');
     })
 
-        test('Session is kep before 24 hours', async({page}) => {
+        test('Session is kept before 24 hours', async({page}) => {
             await page.clock.fastForward(23 * HOUR + 59 * 60 * 1000);
             await page.reload();
             await expect(page.getByTestId('nav-user-name')).toBeVisible();

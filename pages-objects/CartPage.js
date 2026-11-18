@@ -32,6 +32,10 @@ class CartPage extends BasePage{
         await this.click('button[data-testid="cart-item-remove"]');
     }
 
+    async clickCheckoutButton() {
+        await this.click('a[data-testid="proceed-to-checkout"]');
+    }
+
 }
 
 module.exports = CartPage;

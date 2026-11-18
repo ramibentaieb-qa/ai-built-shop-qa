@@ -197,3 +197,26 @@ Story 7, criterion 7 is replaced by this story. "The shopper is not logged in ye
 
 ### Out of scope
 Email verification, "remember me", password recovery, and any database.
+
+
+## Story 10: Checkout Gate
+
+**As a** shop owner,
+**I want** only logged-in shoppers to reach the payment page,
+**so that** every order belongs to a known account.
+
+### Acceptance Criteria
+1. A shopper who is not logged in and opens `/payment` (through "Proceed to checkout" or by typing the address) is redirected to `/login`.
+2. The login page then shows the message "Please log in to continue to payment" (`login-required-message`). The message is not shown when the shopper opens `/login` normally.
+3. After a successful login from this redirect, the shopper lands on `/payment`. After a normal login, the shopper still lands on the Home page (Story 8).
+4. A logged-in shopper with items in the cart who opens `/payment` sees the placeholder page "Payment page coming soon".
+5. A logged-in shopper with an empty cart who opens `/payment` is redirected to `/cart`, which shows "Your cart is empty".
+6. The cart is unchanged by the redirect and the login.
+7. If the account expires (24 hours, as in Story 7) while the shopper is on `/payment`, the next page load logs them out and sends them to `/login` with the message "Your demo account has expired, please register again".
+8. The return address after login only works for pages inside the shop. Any other value (for example a full `https://` address) is ignored, and the shopper lands on the Home page.
+
+### Locators
+`login-required-message` (new), plus the existing `nav-user-name`, `login-email`, `login-password`, `login-submit`, `proceed-to-checkout` and `cart-empty`.
+
+### Out of scope
+The payment form, order confirmation, password recovery, and any database. A shopper who registers from the login page lands on the Home page (Story 9), not on `/payment`.
