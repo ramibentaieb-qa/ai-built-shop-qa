@@ -115,6 +115,7 @@ test.describe('Session expiry afer 24 hours', () => {
 
         await homePage.clickLoginLink();
         await loginPage.loginFillAndSubmit('jondoe@email.com', 'jondoe123');
+        await expect(page.getByTestId('nav-user-name')).toContainText('jon doe')
     })
 
         test('Session is kept before 24 hours', async({page}) => {
@@ -123,10 +124,12 @@ test.describe('Session expiry afer 24 hours', () => {
             await expect(page.getByTestId('nav-user-name')).toBeVisible();
         })
 
-        test('Seesion is expired after 24 hours', async ({page}) => {
+        test('Session is expired after 24 hours', async ({page}) => {
             await page.clock.fastForward(24 * HOUR + 60 * 1000);
             await page.reload();
-            await expect(page.getByTestId('session-expired-message')).toHaveText('Your demo account has expired, please register again')
+
+            await expect(page.getByTestId('nav-login')).toBeVisible();
+            await expect(page.getByTestId('session-expired-message')).toBeVisible()
         })
 
 

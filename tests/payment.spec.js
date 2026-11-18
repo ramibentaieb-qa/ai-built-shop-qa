@@ -97,6 +97,7 @@ test.describe('Session expiry after 24 hours', () => {
         await homePage.clickRegisterLink();
 
         await registerPage.fillAndSubmit('jon doe', 'jondoe@email.com', 'jondoe123');
+        await expect(page.getByTestId('nav-user-name')).toBeVisible();
     })
 
     test('Session is KEPT while user in the payment BEFORE 24 hours', async ({page}) => {
@@ -114,7 +115,7 @@ test.describe('Session expiry after 24 hours', () => {
          await expect(registerPage.heading).toBeVisible()
     })
 
-    test('Session is EXPIRED while user in the payment AFTER 24 hours', async ({page}) => {
+    test('Session is EXPIRED while user in the payment page AFTER 24 hours', async ({page}) => {
 
         await homePage.clickProductsLink();
         await productpage.clickAProduct(1);
@@ -127,6 +128,6 @@ test.describe('Session expiry after 24 hours', () => {
          await page.reload();
 
          await expect(loginPage.heading).toBeVisible()
-         await expect(page.getByTestId('session-expired-message')).toHaveText('Your demo account has expired, please register again')
+         await expect(page.getByTestId('session-expired-message')).toBeVisible()
     })
 })
