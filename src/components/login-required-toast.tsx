@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useSession } from "@/components/session-provider";
 import { LOGIN_REQUIRED_MESSAGE } from "@/lib/messages";
-import { getToast, showToast } from "@/lib/toast-store";
+import { showToast } from "@/lib/toast-store";
 
 /**
  * Tells the shopper why the checkout gate sent them to the login page. The
@@ -12,13 +12,17 @@ import { getToast, showToast } from "@/lib/toast-store";
  * space in the page and it goes away by itself.
  */
 export function LoginRequiredToast({ returnPath }: { returnPath: string | null }) {
-  const { session, ready } = useSession();
+  const { session, expired, ready } = useSession();
+  const decided = useRef(false);
 
   useEffect(() => {
-    if (!ready) {
+    if (decided.current || !ready) {
       // The browser state is not known yet, so nothing is decided.
       return;
     }
+
+    // The decision is made once, so the message does not come back later.
+    decided.current = true;
 
     if (session) {
       // The shopper is logged in already, so there is nothing to log in to.
@@ -31,9 +35,8 @@ export function LoginRequiredToast({ returnPath }: { returnPath: string | null }
       return;
     }
 
-    if (getToast()) {
-      // Another notification is on screen, and it is the more important one,
-      // for example the message about an expired account.
+    if (expired) {
+      // The account expired, so that message is the more important one.
       return;
     }
 
@@ -42,7 +45,7 @@ export function LoginRequiredToast({ returnPath }: { returnPath: string | null }
       text: LOGIN_REQUIRED_MESSAGE,
       tone: "info",
     });
-  }, [ready, session, returnPath]);
+  }, [ready, session, expired, returnPath]);
 
   return null;
 }
