@@ -10,19 +10,18 @@ import { findAccountByEmail } from "@/lib/accounts";
 import { getAccounts } from "@/lib/account-store";
 import {
   SESSION_EXPIRED_KEY,
+  SESSION_EXPIRED_MESSAGE,
   SESSION_STORAGE_KEY,
-  SESSION_WELCOME_KEY,
   parseSession,
   type Session,
 } from "@/lib/session";
+import { showToast } from "@/lib/toast-store";
 
 export type SessionState = {
   /** The logged in shopper, or null when nobody is logged in. */
   session: Session | null;
   /** True when the account of the shopper expired. */
   expired: boolean;
-  /** The name of the shopper who just registered, for the welcome message. */
-  welcome: string | null;
 };
 
 type Listener = () => void;
@@ -30,7 +29,7 @@ type Listener = () => void;
 const listeners = new Set<Listener>();
 
 /** The session state during server rendering and hydration: always empty. */
-const SERVER_STATE: SessionState = { session: null, expired: false, welcome: null };
+const SERVER_STATE: SessionState = { session: null, expired: false };
 
 /**
  * The state is cached, because `useSyncExternalStore` needs the same value as
@@ -58,7 +57,6 @@ function readState(): SessionState {
   return {
     session: parseSession(storage.getItem(SESSION_STORAGE_KEY)),
     expired: storage.getItem(SESSION_EXPIRED_KEY) !== null,
-    welcome: storage.getItem(SESSION_WELCOME_KEY),
   };
 }
 
@@ -79,12 +77,6 @@ function writeState(next: SessionState): void {
       storage?.setItem(SESSION_EXPIRED_KEY, "1");
     } else {
       storage?.removeItem(SESSION_EXPIRED_KEY);
-    }
-
-    if (next.welcome) {
-      storage?.setItem(SESSION_WELCOME_KEY, next.welcome);
-    } else {
-      storage?.removeItem(SESSION_WELCOME_KEY);
     }
   } catch {
     // A browser that blocks storage still works, the session stays in memory.
@@ -138,42 +130,31 @@ export function checkSession(): Session | null {
     return state.session;
   }
 
-  writeState({ session: null, expired: true, welcome: state.welcome });
+  writeState({ session: null, expired: true });
+
+  // The shopper is told with a notification, so the message goes away by
+  // itself. The notification is shown once: the session is already closed
+  // when the shop looks again.
+  showToast({
+    testId: "session-expired-message",
+    text: SESSION_EXPIRED_MESSAGE,
+    tone: "warning",
+    onDismiss: clearExpiredNotice,
+  });
 
   return null;
 }
 
 /** Logs the shopper in. */
 export function startSession(session: Session): void {
-  writeState({ session, expired: false, welcome: null });
+  writeState({ session, expired: false });
 }
 
 /** Ends the session and logs the shopper out. */
 export function endSession(): void {
   const state = getSessionState();
 
-  writeState({ session: null, expired: state.expired, welcome: null });
-}
-
-/**
- * Remembers the name of a shopper who just registered, so the home page can
- * welcome them.
- */
-export function rememberWelcome(name: string): void {
-  const state = getSessionState();
-
-  writeState({ ...state, welcome: name });
-}
-
-/** Forgets the name of the shopper who just registered. */
-export function clearWelcome(): void {
-  const state = getSessionState();
-
-  if (!state.welcome) {
-    return;
-  }
-
-  writeState({ ...state, welcome: null });
+  writeState({ session: null, expired: state.expired });
 }
 
 /** Hides the message about the expired account, for example after registering. */

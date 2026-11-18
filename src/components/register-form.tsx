@@ -6,7 +6,8 @@ import { useRef, useState, type FormEvent, type RefObject } from "react";
 import { useSession } from "@/components/session-provider";
 import { MIN_PASSWORD_LENGTH, findAccountByEmail, isValidEmail } from "@/lib/accounts";
 import { addAccount, getAccounts } from "@/lib/account-store";
-import { rememberWelcome } from "@/lib/session-store";
+import { welcomeMessage } from "@/lib/messages";
+import { showToast } from "@/lib/toast-store";
 
 type FieldName = "name" | "email" | "password" | "confirm";
 
@@ -184,8 +185,12 @@ export function RegisterForm() {
       createdAt: account.createdAt,
     });
 
-    // The home page welcomes the new shopper.
-    rememberWelcome(account.name);
+    // The home page welcomes the new shopper with a notification.
+    showToast({
+      testId: "welcome-message",
+      text: welcomeMessage(account.name),
+      tone: "success",
+    });
 
     // A new account means the message about the expired one is not needed.
     dismissExpiredNotice();
