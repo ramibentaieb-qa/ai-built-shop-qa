@@ -6,6 +6,7 @@ const LoginPage = require('../pages-objects/LoginPage');
 const Productpage = require('../pages-objects/ProductsPage');
 const ProductDetailsPage = require('../pages-objects/ProductDetailsPage');
 const CartPage = require('../pages-objects/CartPage');
+const PaymentPage = require('../pages-objects/PaymentPage')
 
 test.describe('Testing Payment Page', () => {
     /** @type {HomePage} */
@@ -20,6 +21,8 @@ test.describe('Testing Payment Page', () => {
     let productDetailsPage;
     /** @type {CartPage} */
     let cartPage;
+    /** @type {PaymentPage} */
+    let paymentPage;
 
     test.beforeEach(async({page}) => {
         homePage = new HomePage(page);
@@ -28,6 +31,7 @@ test.describe('Testing Payment Page', () => {
         productpage = new Productpage(page);
         productDetailsPage = new ProductDetailsPage(page);
         cartPage = new CartPage(page);
+        paymentPage = new PaymentPage(page)
 
         await homePage.openHomePage();
         await homePage.clickRegisterLink();
@@ -43,7 +47,7 @@ test.describe('Testing Payment Page', () => {
         await homePage.clickCartLink();
         await cartPage.clickCheckoutButton();
 
-        await expect(registerPage.heading).toHaveText('Payment page coming soon');
+        await expect(paymentPage.heading).toHaveText('Payment');
     })
 
     test('A logged in user with empty cart redirected to cart page instead of the payment page', async ({page}) => {

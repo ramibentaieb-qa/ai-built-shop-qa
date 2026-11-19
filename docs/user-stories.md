@@ -255,7 +255,7 @@ Inline form errors (`size-error`, login and register field errors), sounds, anim
 **so that** I can place my order.
 
 ### Acceptance Criteria
-1. `/payment` shows the order total (`checkout-total`, same amount as on the cart page) and a form with these fields: full name, email, phone, address, city, card number, expiry date (MM/YY), and CVC, plus a "Place order" button (`place-order`). The Story 10 rules still apply (login required, empty cart goes to `/cart`).
+1. `/payment` shows the order total (`checkout-total`, same amount as on the cart page) and a form with these fields: full name, email, phone, address, city, card number, expiry date (MM/YY), and CVC, plus a "Place order" button (`place-order`). The Story 10 rules still apply (login required, empty cart goes to `/cart`). And the heading shouldd be "Payment".
 2. Full name and email are filled in from the logged-in account, and can be changed.
 3. Every field is required. An empty field shows an error for that field, and no order is placed.
 4. The email must have a valid format. The phone number must have 8 to 15 digits (spaces and a leading `+` are allowed). Name, address and city must have at most 100 characters.
@@ -266,6 +266,7 @@ Inline form errors (`size-error`, login and register field errors), sounds, anim
 9. The card number, expiry date and CVC are never saved in the browser, and the form is empty of card data after a page refresh.
 10. The page shows the notice "Mock payment: do not enter a real card number."
 11. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+12. The CVC field hides what is typed (shown as dots, like a password). The card number and expiry date stay visible.
 
 ### Locators
 `checkout-total`, `checkout-name`, `checkout-email`, `checkout-phone`, `checkout-address`, `checkout-city`, `checkout-card-number`, `checkout-expiry`, `checkout-cvc`, `place-order`, and one error per field: `checkout-error-name`, `checkout-error-email`, `checkout-error-phone`, `checkout-error-address`, `checkout-error-city`, `checkout-error-card-number`, `checkout-error-expiry`, `checkout-error-cvc`.

@@ -10,3 +10,4 @@
 | 9 Automatic Login After Registration              |   7       | 0            | +1               | Accepted  |
 | 10 Automatic Checkout Gate                        |   8       | 0            | +5               | Accepted  |
 | 11 Notifications (toasts)                         |   9       | 0            | +0 (Regression tests)| Accepted  |
+| 12 Payment Form                                   |   12      | 0            | +5               | Accepted  |
