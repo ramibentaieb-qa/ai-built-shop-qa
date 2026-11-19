@@ -92,6 +92,8 @@ const FIELDS: FieldConfig[] = [
     id: "checkout-cvc",
     errorTestId: "checkout-error-cvc",
     label: "CVC",
+    // The security code is hidden while it is typed, like a password.
+    type: "password",
     inputMode: "numeric",
     autoComplete: "off",
     placeholder: "123",
