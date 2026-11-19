@@ -18,7 +18,7 @@ export default function PaymentPage() {
           Checkout
         </p>
         <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-          Payment page coming soon
+          Payment
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-ink-muted">
           Mock payment: do not enter a real card number.
