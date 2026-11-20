@@ -124,3 +124,9 @@ export function removeCartItem(productId: string, size: string): void {
   writeStoredCart(items);
   notifyListeners();
 }
+
+/** Take everything out of the cart, for example when an order is placed. */
+export function emptyCart(): void {
+  writeStoredCart([]);
+  notifyListeners();
+}
