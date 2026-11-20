@@ -7,7 +7,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { useCart } from "@/components/cart-provider";
 import { useSession } from "@/components/session-provider";
 import { formatMoney } from "@/lib/cart";
-import { cartMatchesOrder } from "@/lib/order";
+import { cartMatchesOrder, orderBelongsTo } from "@/lib/order";
 import { getOrder, getServerOrder, subscribeToOrder } from "@/lib/order-store";
 
 /**
@@ -48,6 +48,12 @@ export function OrderConfirmation() {
       return;
     }
 
+    if (!orderBelongsTo(order, session.email)) {
+      // The order belongs to another account, so it is not shown here.
+      router.replace("/cart");
+      return;
+    }
+
     // The order is placed, so the cart is empty now. It is only emptied when
     // it still holds the items of this order, so newer items are kept.
     if (cartMatchesOrder(items, order)) {
@@ -55,7 +61,13 @@ export function OrderConfirmation() {
     }
   }, [sessionReady, orderReady, session, order, items, emptyCart, router]);
 
-  if (!sessionReady || !orderReady || !session || !order) {
+  if (
+    !sessionReady ||
+    !orderReady ||
+    !session ||
+    !order ||
+    !orderBelongsTo(order, session.email)
+  ) {
     // The page is only shown when the shopper may see it.
     return null;
   }

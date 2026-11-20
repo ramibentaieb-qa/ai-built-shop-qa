@@ -2,8 +2,8 @@
  * Order storage
  * -------------
  * The order that the shopper placed is kept in the browser, in sessionStorage.
- * It is the last order only: it stays until the tab is closed or another order
- * is placed. The card details are never part of it.
+ * It is the last order only: it stays until the tab is closed, another order
+ * is placed or the shopper logs out. The card details are never part of it.
  */
 
 import type { Order, OrderLine } from "@/lib/order";
@@ -74,6 +74,20 @@ export function saveOrder(order: Order): void {
   notifyListeners();
 }
 
+/** Removes the last order from the browser. */
+export function clearOrder(): void {
+  cachedOrder = null;
+  cacheValid = true;
+
+  try {
+    readStorage()?.removeItem(ORDER_STORAGE_KEY);
+  } catch {
+    // A browser that blocks storage still works, the order is gone from memory.
+  }
+
+  notifyListeners();
+}
+
 /** Reads the stored order and drops anything that is not usable. */
 export function parseOrder(raw: string | null): Order | null {
   if (!raw) {
@@ -98,6 +112,7 @@ export function parseOrder(raw: string | null): Order | null {
     typeof record.number !== "string" ||
     typeof record.name !== "string" ||
     typeof record.email !== "string" ||
+    typeof record.ownerEmail !== "string" ||
     typeof record.address !== "string" ||
     typeof record.city !== "string" ||
     !Array.isArray(record.lines) ||
@@ -119,6 +134,7 @@ export function parseOrder(raw: string | null): Order | null {
     number: record.number,
     name: record.name,
     email: record.email,
+    ownerEmail: record.ownerEmail,
     address: record.address,
     city: record.city,
     lines,

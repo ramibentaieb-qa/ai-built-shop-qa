@@ -259,7 +259,9 @@ export function PaymentForm() {
     }
 
     // Everything is good, so the order is placed. Only the details the
-    // shopper filled in are kept, the card is not part of the order.
+    // shopper filled in are kept, the card is not part of the order. The
+    // email of the account is kept with it, so the order only shows for that
+    // account.
     saveOrder(
       buildOrder(
         {
@@ -269,6 +271,7 @@ export function PaymentForm() {
           city: values.city,
         },
         items,
+        session?.email ?? "",
       ),
     );
 

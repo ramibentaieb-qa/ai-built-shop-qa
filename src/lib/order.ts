@@ -27,6 +27,8 @@ export type OrderDetails = {
 
 /** The order of the shopper. */
 export type Order = OrderDetails & {
+  /** The email of the account that placed the order. */
+  ownerEmail: string;
   /** The number the shopper reads, for example MM-482913. */
   number: string;
   lines: OrderLine[];
@@ -43,9 +45,14 @@ export function createOrderNumber(): string {
 
 /**
  * Builds the order of the shopper from the cart and the details they entered.
- * The amounts are the same as the ones on the cart page.
+ * The amounts are the same as the ones on the cart page. The email of the
+ * account is kept with the order, so the order only shows for that account.
  */
-export function buildOrder(details: OrderDetails, items: CartItem[]): Order {
+export function buildOrder(
+  details: OrderDetails,
+  items: CartItem[],
+  ownerEmail: string,
+): Order {
   const lines = items.flatMap((item) => {
     const product = getProduct(item.productId);
 
@@ -66,6 +73,7 @@ export function buildOrder(details: OrderDetails, items: CartItem[]): Order {
 
   return {
     ...details,
+    ownerEmail,
     number: createOrderNumber(),
     lines,
     subtotalCents,
@@ -73,6 +81,14 @@ export function buildOrder(details: OrderDetails, items: CartItem[]): Order {
     totalCents: subtotalCents + DELIVERY_FEE_CENTS,
     createdAt: Date.now(),
   };
+}
+
+/**
+ * True when the order belongs to the account with that email. The order is
+ * only shown for the account that placed it.
+ */
+export function orderBelongsTo(order: Order, email: string): boolean {
+  return order.ownerEmail.trim().toLowerCase() === email.trim().toLowerCase();
 }
 
 /** True when the cart still holds the items of the order. */

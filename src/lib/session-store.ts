@@ -8,6 +8,7 @@
 
 import { findAccountByEmail } from "@/lib/accounts";
 import { getAccounts } from "@/lib/account-store";
+import { clearOrder } from "@/lib/order-store";
 import {
   SESSION_EXPIRED_KEY,
   SESSION_EXPIRED_MESSAGE,
@@ -155,6 +156,9 @@ export function endSession(): void {
   const state = getSessionState();
 
   writeState({ session: null, expired: state.expired });
+
+  // The order goes with the session, so nobody else can see it.
+  clearOrder();
 }
 
 /** Hides the message about the expired account, for example after registering. */
