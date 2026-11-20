@@ -273,3 +273,27 @@ Inline form errors (`size-error`, login and register field errors), sounds, anim
 
 ### Out of scope
 The content of the confirmation page, emptying the cart, order history, real payment, and any database.
+
+## Story 13: Order Confirmation
+
+**As a** shopper who has paid,
+**I want** to see a confirmation of my order,
+**so that** I know it went through and what I ordered.
+
+### Acceptance Criteria
+1. A valid payment (Story 12) opens `/order-confirmation`, which shows the heading "Order placed" and an order number (`order-number`) in the format `MM-` followed by 6 digits (for example `MM-482913`).
+2. The page shows the name, email, address and city the shopper entered, one line for each product ordered (name, size, quantity and line total), the subtotal, the delivery fee and the total. The amounts are the same as on the cart page just before payment.
+3. The page never shows the card number, expiry date or CVC, and they are not saved anywhere in the browser.
+4. After the order is placed, the cart is emptied and the header badge is hidden.
+5. A page refresh keeps showing the same confirmation and the same order number, until the shopper places another order or the browser is closed.
+6. Placing another order creates a new order number.
+7. A shopper who opens `/order-confirmation` without having placed an order is redirected to `/cart`. A shopper who is not logged in is redirected to `/login` (Story 10 rules).
+8. The page has a "Continue shopping" link (`continue-shopping`) to `/products`.
+9. Using the browser back button from the confirmation page does not allow a second payment of the same cart: `/payment` with the now empty cart redirects to `/cart` (Story 10).
+10. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+
+### Locators
+`order-number`, `order-name`, `order-email`, `order-address`, `order-city`, `order-item` (one per line), `order-subtotal`, `order-delivery`, `order-total`, plus the existing `continue-shopping` and `cart-badge`.
+
+### Out of scope
+Order history, emails, printing or downloading the confirmation, real payment, and any database.
