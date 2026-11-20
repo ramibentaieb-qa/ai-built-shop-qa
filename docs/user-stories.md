@@ -291,6 +291,7 @@ The content of the confirmation page, emptying the cart, order history, real pay
 8. The page has a "Continue shopping" link (`continue-shopping`) to `/products`.
 9. Using the browser back button from the confirmation page does not allow a second payment of the same cart: `/payment` with the now empty cart redirects to `/cart` (Story 10).
 10. The page displays correctly at 375px and 1440px width, and every control can be used with the keyboard only.
+11. The confirmation belongs to the account that placed the order. Logging out clears it, and no other account can see it.
 
 ### Locators
 `order-number`, `order-name`, `order-email`, `order-address`, `order-city`, `order-item` (one per line), `order-subtotal`, `order-delivery`, `order-total`, plus the existing `continue-shopping` and `cart-badge`.
