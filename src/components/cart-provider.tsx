@@ -12,6 +12,7 @@ import {
 import { countItems, type CartItem } from "@/lib/cart";
 import {
   addItemToCart,
+  emptyCart as emptyStoredCart,
   getCartItems,
   getServerCartItems,
   removeCartItem,
@@ -28,6 +29,8 @@ type CartContextValue = {
   addItem: (item: CartItem) => void;
   updateQuantity: (productId: string, size: string, quantity: number) => void;
   removeItem: (productId: string, size: string) => void;
+  /** Takes everything out of the cart, for example when an order is placed. */
+  emptyCart: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -61,9 +64,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     removeCartItem(productId, size);
   }, []);
 
+  const emptyCart = useCallback(() => {
+    emptyStoredCart();
+  }, []);
+
   const value = useMemo<CartContextValue>(
-    () => ({ items, count, ready, addItem, updateQuantity, removeItem }),
-    [items, count, ready, addItem, updateQuantity, removeItem],
+    () => ({ items, count, ready, addItem, updateQuantity, removeItem, emptyCart }),
+    [items, count, ready, addItem, updateQuantity, removeItem, emptyCart],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

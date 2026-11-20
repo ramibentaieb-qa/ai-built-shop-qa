@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent, type RefObject } from "react";
 
+import { useCart } from "@/components/cart-provider";
 import { useSession } from "@/components/session-provider";
 import {
   PAYMENT_FIELDS,
@@ -12,6 +13,8 @@ import {
   type PaymentField,
   type PaymentValues,
 } from "@/lib/payment";
+import { buildOrder } from "@/lib/order";
+import { saveOrder } from "@/lib/order-store";
 
 type FieldConfig = {
   /** The field of the rules. */
@@ -176,6 +179,7 @@ function TextField({
 export function PaymentForm() {
   const router = useRouter();
   const { session } = useSession();
+  const { items } = useCart();
 
   // What the shopper typed. The name and the email come from the account
   // until the shopper types something else.
@@ -254,8 +258,20 @@ export function PaymentForm() {
       return;
     }
 
-    // Everything is good, so the order is placed. Nothing of the card is
-    // taken along.
+    // Everything is good, so the order is placed. Only the details the
+    // shopper filled in are kept, the card is not part of the order.
+    saveOrder(
+      buildOrder(
+        {
+          name: values.name,
+          email: values.email,
+          address: values.address,
+          city: values.city,
+        },
+        items,
+      ),
+    );
+
     router.push("/order-confirmation");
   }
 
