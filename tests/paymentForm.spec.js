@@ -73,7 +73,7 @@ test.describe('Testing Payment Form', () => {
     })
 
 
-    test('Successfull payment testing with vaid card credentials', async({page}) => {
+    test('Successfull payment testing with vaid card credentials', { tag: '@smoke'}, async({page}) => {
         await cartPage.clickCheckoutButton();
          
         await paymentPage.FillPaymentForm(card.phoneNumber, card.address, card.city, card.cardNumber, card.expiryDate, card.cvc);

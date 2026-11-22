@@ -6,7 +6,7 @@ class NotFoundPage extends BasePage {
     }
 
     async openUnknownPage() {
-        return await this.navigate('http://localhost:3000/abc123'); 
+        return await this.navigate('/abc123'); 
     }
 
     async getHeadingText() {

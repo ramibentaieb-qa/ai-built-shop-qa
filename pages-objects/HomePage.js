@@ -6,11 +6,11 @@ class HomePage extends BasePage{
     }
 
     async openHomePage() {
-        await this.navigate('http://localhost:3000');
+        await this.navigate('/');
     }
 
     async openPaymenPage() {
-        await this.navigate('http://localhost:3000/payment')
+        await this.navigate('/payment')
     }
 
     async getTitleText() {

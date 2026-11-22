@@ -30,7 +30,7 @@ test.describe('Testing Add To Cart Functionalities', () => {
     })
 
 
-    test('Visibility of Cart Badge when an Item is Added', async({page}) => {
+    test('Visibility of Cart Badge when an Item is Added', { tag: '@smoke'}, async({page}) => {
         
         const cartBadge = productDetailsPage.getCartBadge();
         await expect(cartBadge).toBeHidden();

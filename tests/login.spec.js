@@ -25,7 +25,7 @@ test.describe('Testing Login Page', () => {
         await homePage.clickLogoutLink();
     })
 
-    test('Successful login with valid credentials', async ({page}) => {
+    test('Successful login with valid credentials', { tag: '@smoke'}, async ({page}) => {
         
         await expect(page.getByTestId('nav-user-name')).toBeHidden();
         await expect(page.getByTestId('nav-logout')).toBeHidden();
@@ -83,7 +83,7 @@ test.describe('Testing Login Page', () => {
         
 
         const newTab = await context.newPage();
-        await newTab.goto('http://localhost:3000/');
+        await newTab.goto('/');
 
         await expect(newTab.getByTestId('nav-login')).toBeVisible();
         await expect(newTab.getByTestId('nav-user-name')).toBeHidden();

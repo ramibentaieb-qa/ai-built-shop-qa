@@ -21,11 +21,11 @@ test.describe('Testing Product Details Page', () => {
 
         await productsPage.clickAProduct(1);
 
-        await expect(page).toHaveURL('http://localhost:3000/products/1');
+        await expect(page).toHaveURL('/products/1');
 
         await productDetailsPage.clickReturnButton();
 
-        await expect(page).toHaveURL('http://localhost:3000/products');
+        await expect(page).toHaveURL('/products');
     })
 
     test('Product Details Page have name, price, image', async({page}) => {

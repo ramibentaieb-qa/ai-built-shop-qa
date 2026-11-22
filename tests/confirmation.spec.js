@@ -197,8 +197,8 @@ test.describe('Order Confirmation navigation logic', () => {
 
     test('A non logged in shopper cannot navigate to order-confirmation page', async({page}) => {
 
-        await page.goto('http://localhost:3000/order-confirmation');
-        await expect(page).toHaveURL('http://localhost:3000/login')
+        await page.goto('/order-confirmation');
+        await expect(page).toHaveURL('/login')
         await expect(loginPage.heading).toHaveText('Log in')
     })
 
@@ -207,8 +207,8 @@ test.describe('Order Confirmation navigation logic', () => {
         await homePage.clickRegisterLink();
         await registerPage.fillAndSubmit(user.name, user.email, user.password);
 
-        await page.goto('http://localhost:3000/order-confirmation');
-        await expect(page).toHaveURL('http://localhost:3000/cart')
+        await page.goto('/order-confirmation');
+        await expect(page).toHaveURL('/cart')
         await expect(cartPage.cartHeading).toHaveText('Your cart')  
     })
 
@@ -228,7 +228,7 @@ test.describe('Order Confirmation navigation logic', () => {
         
         await page.goBack()
 
-        await expect(page).toHaveURL('http://localhost:3000/cart')
+        await expect(page).toHaveURL('/cart')
         await expect(cartPage.cartHeading).toHaveText('Your cart')
     })
 })

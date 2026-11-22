@@ -1,0 +1,31 @@
+name: Live smoke tests
+
+# Run when Vercel reports a finished deployment
+on:
+  deployment_status:
+
+jobs:
+  smoke:
+    # Only when the deploy succeeded and it was the Production one
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Run smoke tests on the live site
+        run: npx playwright test --grep @smoke
+        env:
+          # The address of the deployment Vercel just made
+          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+      - name: Save the report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-smoke-report
+          path: playwright-report/
+          retention-days: 14

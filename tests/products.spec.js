@@ -21,7 +21,7 @@ test.describe("Testing Products List", () => {
     })
 
 
-    test('Products page should display all products cards with unique name, image, and price', async({page}) => {
+    test('Products page should display all products cards with unique name, image, and price', { tag: '@smoke'}, async({page}) => {
         
         const cards = page.getByTestId('product-card');
         await expect(cards).toHaveCount(12);
