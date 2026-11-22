@@ -22,3 +22,8 @@ A story is done when:
 - No open critical or high-severity bugs remain
 - Automated tests pass in CI
 - The change is deployed to staging
+
+## Roles
+- MiniMax Code: developer (writes the application code)
+- Claude: business analyst (drafts user stories and acceptance criteria)
+- Me: QA lead (review and approvves the stories, tests, report bugs, writes the playwright tests, accepts or rejects each story)

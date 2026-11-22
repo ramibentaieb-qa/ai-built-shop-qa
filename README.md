@@ -2,21 +2,36 @@
 
 ![CI Pipeline](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
 
-MiniMart is a small online shop built with Next.js. An AI coding agent (MiniMax Code) writes all the application code. I act as the QA lead: I write the requirements, test every story, report bugs, and decide whether a story is accepted.
-
-I'm a software tester looking for my first role inside a company, so I set this up to practise how a real team works. The code is not mine, and I don't pretend it is. The user stories, manual testing, bug reports, Playwright tests and CI pipeline are mine.
+MiniMart is a small online shop built with Next.js, made by a small team of two AI agents and me. MiniMax Code is the developer: it writes all the application code. Claude is the business analyst: it drafts the user stories and acceptance criteria with me. I'm the QA lead: I review and approve the stories, test every one of them, report bugs, write the Playwright tests and decide whether a story is accepted.
 
 It's a mock shop. There are no real payments, no real customer data and no database.
 
 ## How each feature gets built
 
-1. I write a user story with numbered acceptance criteria in `docs/user-stories.md`.
+1. Claude, as business analyst, drafts a user story with numbered acceptance criteria, and I review, change and approve it (`docs/user-stories.md`).
 2. The agent builds that story and nothing else, on its own branch, following the rules in `AGENTS.md`.
 3. I test it by hand. That means every criterion, then my own exploratory checks: edge cases, keyboard use, small screens, console errors.
 4. Any defect becomes a GitHub Issue. The agent fixes it and I retest.
 5. I write the Playwright tests and run the whole suite to catch regressions.
 6. I open a pull request. I merge only when the pipeline is green.
 7. I write a short test report for the story in `docs/test-report-storyN.md`.
+
+```mermaid
+flowchart TD
+    A["Claude drafts the story and criteria"] --> A2["I review and approve"]
+    A2 --> B["MiniMax Code builds it on its own branch"]
+    B --> C["I test it by hand"]
+    C --> D{"Defect found?"}
+    D -- Yes --> E["I open a GitHub Issue"]
+    E --> F["MiniMax Code fixes it"]
+    F --> C
+    D -- No --> G["I write the Playwright tests"]
+    G --> H["Pull request into main"]
+    H --> I{"CI green?"}
+    I -- No --> G
+    I -- Yes --> J["Merge to main"]
+    J --> K["I write the test report"]
+```
 
 ## What is built
 
@@ -33,9 +48,48 @@ It's a mock shop. There are no real payments, no real customer data and no datab
 | 9 | Automatic login after registration | Done |
 | 10 | Checkout gate: `/payment` requires login | Done |
 | 11 | Notifications (toasts) | Done |
-| 12 | Payment form and order confirmation | Done |
+| 12 | Payment form | Done |
+| 13 | Order confirmation, cart emptied after the order | Done |
 
 The full acceptance criteria are in [`docs/user-stories.md`](docs/user-stories.md).
+
+## Project Map
+
+```mermaid
+flowchart LR
+    P(("MiniMart<br/>two AI agents, one QA lead"))
+
+    P --> B["Business analyst: Claude"]
+    B --> B1["Drafts user stories"]
+    B --> B2["Drafts acceptance criteria"]
+    B --> B3["I review and approve"]
+
+    P --> D["Developer: MiniMax Code"]
+    D --> D1["Builds one story per branch"]
+    D --> D2["Follows the rules in AGENTS.md"]
+    D --> D3["Fixes bugs from GitHub Issues"]
+
+    P --> S["Shop app (Next.js)"]
+    S --> S1["Browse: home, products, product detail"]
+    S --> S2["Buy: cart, payment, order confirmation"]
+    S --> S3["Account: register, login, logout"]
+    S --> S4["Data kept in the browser only"]
+
+    P --> Q["QA lead: me"]
+    Q --> Q1["Manual and exploratory testing"]
+    Q --> Q2["Bug reports in GitHub Issues"]
+    Q --> Q3["Test report per story"]
+    Q --> Q4["Playwright tests and Page Objects"]
+
+    P --> C["CI with GitHub Actions"]
+    C --> C1["lint and build in parallel"]
+    C1 --> C2["Playwright tests"]
+    C2 --> C3["Merge to main only when green"]
+
+    P --> N["Next"]
+    N --> N1["Deploy to a live URL"]
+    N --> N2["Smoke tests on the live site"]
+```
 
 ## How I test
 
