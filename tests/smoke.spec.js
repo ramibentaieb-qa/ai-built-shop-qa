@@ -6,7 +6,7 @@ const {test, expect} = require('@playwright/test');
 
 test.describe('Testing First Setup', () => {
 
-    test('Home Page Loads', async ({page}) => {
+    test('Home Page Loads', { tag: '@smoke'}, async ({page}) => {
 
         const homePage = new HomePage(page);
         await homePage.openHomePage();

@@ -57,12 +57,12 @@ test.describe('Testing Register Page', () => {
 
 
     /** see Story 9 */
-    test('Successful registration logs the shopper in and redirects to home page', async({page}) => {
+    test('Successful registration logs the shopper in and redirects to home page', { tag: '@smoke'}, async({page}) => {
         await expect(page.getByTestId('nav-register')).toBeVisible();
         
         await registerPage.fillAndSubmit('Jon Doe', 'jondoe@email.com', 'jondoe123');
         
-        await expect(page).toHaveURL('http://localhost:3000/');
+        await expect(page).toHaveURL('/');
         await expect(page.getByTestId('nav-user-name')).toHaveText('Jon Doe');
         await expect(page.getByTestId('nav-logout')).toBeVisible();
         await expect(page.getByTestId('nav-register')).toBeHidden();
