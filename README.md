@@ -2,6 +2,8 @@
 
 ![CI Pipeline](https://github.com/ramibentaieb-qa/ai-built-shop-qa/actions/workflows/playwright.yml/badge.svg)
 
+**Live demo:** https://ai-built-shop-qa.vercel.app
+
 MiniMart is a small online shop built with Next.js, made by a small team of two AI agents and me. MiniMax Code is the developer: it writes all the application code. Claude is the business analyst: it drafts the user stories and acceptance criteria with me. I'm the QA lead: I review and approve the stories, test every one of them, report bugs, write the Playwright tests and decide whether a story is accepted.
 
 It's a mock shop. There are no real payments, no real customer data and no database.
@@ -103,15 +105,24 @@ The agent isn't allowed to touch `tests/` or `pages-objects/`, and I treat its o
 
 ## Continuous integration
 
-The GitHub Actions pipeline in `.github/workflows/playwright.yml` runs on every pull request and every push to `main`.
+## Continuous integration
 
-```
-lint ──┐
-       ├──> test (Playwright)
-build ─┘
-```
+Two GitHub Actions workflows protect `main`.
 
-`lint` and `build` run in parallel. `test` starts only when both pass, and it uploads the Playwright HTML report as an artifact.
+`.github/workflows/playwright.yml` runs on every pull request and every push to `main`. `lint` and `build` run in parallel, then the Playwright tests run. I merge only when it is green.
+
+`.github/workflows/live-smoke.yml` runs after the CI pipeline succeeds on `main`. It runs the `@smoke` tests against the live site.
+
+```mermaid
+flowchart LR
+    PR["Pull request"] --> L["lint"]
+    PR --> B["build"]
+    L --> T["Playwright tests"]
+    B --> T
+    T --> M["Merge to main"]
+    M --> D["Vercel deploys"]
+    D --> S["Smoke tests on the live site"]
+```
 
 ## Run it locally
 
@@ -169,7 +180,8 @@ The app uses `data-testid` attributes so tests don't depend on styling. The agre
 
 ## Limitations
 
-Demo accounts and the cart live in the browser's `localStorage`, and the login session lives in `sessionStorage`. Passwords are stored in plain text because this is a mock, so please don't enter a real one. Accounts are deleted 24 hours after they are created.
+- Demo accounts and the cart live in the browser's `localStorage`, and the login session lives in `sessionStorage`. Passwords are stored in plain text because this is a mock, so please don't enter a real one. Accounts are deleted 24 hours after they are created.
+- The live smoke tests start when the CI pipeline finishes, while Vercel deploys in parallel. They check that the live site answers, not that it is the newest version, so a very slow deployment could be tested at its previous version.
 
 ## More documents
 
