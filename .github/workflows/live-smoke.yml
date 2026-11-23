@@ -1,27 +1,35 @@
 name: Live smoke tests
 
-# Run when Vercel reports a finished deployment
 on:
-  deployment_status:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  LIVE_URL: https://ai-built-shop-qa.vercel.app
 
 jobs:
   smoke:
-    # Only when the deploy succeeded and it was the Production one
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment == 'Production'
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      - name: Wait until the live site answers
+        run: curl --retry 10 --retry-delay 6 --retry-all-errors -fsS "$LIVE_URL" -o /dev/null
       - name: Run smoke tests on the live site
         run: npx playwright test --grep @smoke
         env:
-          # The address of the deployment Vercel just made
-          BASE_URL: ${{ github.event.deployment_status.environment_url }}
+          BASE_URL: ${{ env.LIVE_URL }}
       - name: Save the report
         if: always()
         uses: actions/upload-artifact@v4
