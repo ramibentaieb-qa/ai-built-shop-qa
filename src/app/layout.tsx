@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 
 import { AccountCleanup } from "@/components/account-cleanup";
 import { CartProvider } from "@/components/cart-provider";
@@ -59,6 +60,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <ToastHost />
           </CartProvider>
         </SessionProvider>
+        <Analytics/>
       </body>
     </html>
   );
